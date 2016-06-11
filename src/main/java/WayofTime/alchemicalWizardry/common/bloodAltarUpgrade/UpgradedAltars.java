@@ -5,17 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import WayofTime.alchemicalWizardry.AlchemicalWizardry;
-import WayofTime.alchemicalWizardry.ModBlocks;
 import WayofTime.alchemicalWizardry.api.BlockStack;
-import WayofTime.alchemicalWizardry.api.tile.IAltarComponent;
-import WayofTime.alchemicalWizardry.common.block.BlockCrystal;
-import WayofTime.alchemicalWizardry.common.block.BloodRune;
-import WayofTime.alchemicalWizardry.common.block.BloodStoneBrick;
-import WayofTime.alchemicalWizardry.common.block.LargeBloodStoneBrick;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBeacon;
-import net.minecraft.block.BlockGlowstone;
-import net.minecraft.init.Blocks;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -102,10 +93,9 @@ public class UpgradedAltars
         }
         else
         {
-            if (((altarComponent.getBlock() != block) || (altarComponent.getMetadata() != metadata)) && !(altarComponent.getBlock() == Blocks.stonebrick && !world.isAirBlock(x + altarComponent.getX(), y + altarComponent.getY(), z + altarComponent.getZ())))
+            if (altarComponent.getBlock() != block || altarComponent.getMetadata() != metadata)
             {
-                if (!checkSpecials(altarComponent, new BlockStack(block, metadata)))
-                    return false;
+                return false;
             }
         }
         return true;
@@ -193,18 +183,18 @@ public class UpgradedAltars
         thirdTierAltar.add(new AltarComponent(-1, -1, 1, AlchemicalWizardry.secondTierRunes[0].getBlock(), AlchemicalWizardry.secondTierRunes[0].getMeta(), true, true));
         thirdTierAltar.add(new AltarComponent(0, -1, 1, AlchemicalWizardry.secondTierRunes[0].getBlock(), AlchemicalWizardry.secondTierRunes[0].getMeta(), true, true));
         thirdTierAltar.add(new AltarComponent(1, -1, 1, AlchemicalWizardry.secondTierRunes[0].getBlock(), AlchemicalWizardry.secondTierRunes[0].getMeta(), true, true));
-        thirdTierAltar.add(new AltarComponent(-3, -1, -3, Blocks.stonebrick, 0, false, false));
-        thirdTierAltar.add(new AltarComponent(-3, 0, -3, Blocks.stonebrick, 0, false, false));
-        thirdTierAltar.add(new AltarComponent(3, -1, -3, Blocks.stonebrick, 0, false, false));
-        thirdTierAltar.add(new AltarComponent(3, 0, -3, Blocks.stonebrick, 0, false, false));
-        thirdTierAltar.add(new AltarComponent(-3, -1, 3, Blocks.stonebrick, 0, false, false));
-        thirdTierAltar.add(new AltarComponent(-3, 0, 3, Blocks.stonebrick, 0, false, false));
-        thirdTierAltar.add(new AltarComponent(3, -1, 3, Blocks.stonebrick, 0, false, false));
-        thirdTierAltar.add(new AltarComponent(3, 0, 3, Blocks.stonebrick, 0, false, false));
-        thirdTierAltar.add(new AltarComponent(-3, 1, -3, Blocks.glowstone, 0, false, false));
-        thirdTierAltar.add(new AltarComponent(3, 1, -3, Blocks.glowstone, 0, false, false));
-        thirdTierAltar.add(new AltarComponent(-3, 1, 3, Blocks.glowstone, 0, false, false));
-        thirdTierAltar.add(new AltarComponent(3, 1, 3, Blocks.glowstone, 0, false, false));
+        thirdTierAltar.add(new AltarComponent(-3, -1, -3, AlchemicalWizardry.specialAltarBlock[0].getBlock(), AlchemicalWizardry.specialAltarBlock[0].getMeta(), false, false));
+        thirdTierAltar.add(new AltarComponent(-3, 0, -3, AlchemicalWizardry.specialAltarBlock[0].getBlock(), AlchemicalWizardry.specialAltarBlock[0].getMeta(), false, false));
+        thirdTierAltar.add(new AltarComponent(3, -1, -3, AlchemicalWizardry.specialAltarBlock[0].getBlock(), AlchemicalWizardry.specialAltarBlock[0].getMeta(), false, false));
+        thirdTierAltar.add(new AltarComponent(3, 0, -3, AlchemicalWizardry.specialAltarBlock[0].getBlock(), AlchemicalWizardry.specialAltarBlock[0].getMeta(), false, false));
+        thirdTierAltar.add(new AltarComponent(-3, -1, 3, AlchemicalWizardry.specialAltarBlock[0].getBlock(), AlchemicalWizardry.specialAltarBlock[0].getMeta(), false, false));
+        thirdTierAltar.add(new AltarComponent(-3, 0, 3, AlchemicalWizardry.specialAltarBlock[0].getBlock(), AlchemicalWizardry.specialAltarBlock[0].getMeta(), false, false));
+        thirdTierAltar.add(new AltarComponent(3, -1, 3, AlchemicalWizardry.specialAltarBlock[0].getBlock(), AlchemicalWizardry.specialAltarBlock[0].getMeta(), false, false));
+        thirdTierAltar.add(new AltarComponent(3, 0, 3, AlchemicalWizardry.specialAltarBlock[0].getBlock(), AlchemicalWizardry.specialAltarBlock[0].getMeta(), false, false));
+        thirdTierAltar.add(new AltarComponent(-3, 1, -3, AlchemicalWizardry.specialAltarBlock[1].getBlock(), AlchemicalWizardry.specialAltarBlock[1].getMeta(), false, false));
+        thirdTierAltar.add(new AltarComponent(3, 1, -3, AlchemicalWizardry.specialAltarBlock[1].getBlock(), AlchemicalWizardry.specialAltarBlock[1].getMeta(), false, false));
+        thirdTierAltar.add(new AltarComponent(-3, 1, 3, AlchemicalWizardry.specialAltarBlock[1].getBlock(), AlchemicalWizardry.specialAltarBlock[1].getMeta(), false, false));
+        thirdTierAltar.add(new AltarComponent(3, 1, 3, AlchemicalWizardry.specialAltarBlock[1].getBlock(), AlchemicalWizardry.specialAltarBlock[1].getMeta(), false, false));
 
         for (int i = -2; i <= 2; i++)
         {
@@ -225,21 +215,21 @@ public class UpgradedAltars
         }
         for (int i = -2; i <= 1; i++)
         {
-            fourthTierAltar.add(new AltarComponent(5, i, 5, Blocks.stonebrick, 0, false, false));
-            fourthTierAltar.add(new AltarComponent(5, i, -5, Blocks.stonebrick, 0, false, false));
-            fourthTierAltar.add(new AltarComponent(-5, i, -5, Blocks.stonebrick, 0, false, false));
-            fourthTierAltar.add(new AltarComponent(-5, i, 5, Blocks.stonebrick, 0, false, false));
+            fourthTierAltar.add(new AltarComponent(5, i, 5, AlchemicalWizardry.specialAltarBlock[2].getBlock(), AlchemicalWizardry.specialAltarBlock[2].getMeta(), false, false));
+            fourthTierAltar.add(new AltarComponent(5, i, -5, AlchemicalWizardry.specialAltarBlock[2].getBlock(), AlchemicalWizardry.specialAltarBlock[2].getMeta(), false, false));
+            fourthTierAltar.add(new AltarComponent(-5, i, -5, AlchemicalWizardry.specialAltarBlock[2].getBlock(), AlchemicalWizardry.specialAltarBlock[2].getMeta(), false, false));
+            fourthTierAltar.add(new AltarComponent(-5, i, 5, AlchemicalWizardry.specialAltarBlock[2].getBlock(), AlchemicalWizardry.specialAltarBlock[2].getMeta(), false, false));
         }
-        fourthTierAltar.add(new AltarComponent(5, 2, 5, ModBlocks.largeBloodStoneBrick, 0, false, false));
-        fourthTierAltar.add(new AltarComponent(5, 2, -5, ModBlocks.largeBloodStoneBrick, 0, false, false));
-        fourthTierAltar.add(new AltarComponent(-5, 2, -5, ModBlocks.largeBloodStoneBrick, 0, false, false));
-        fourthTierAltar.add(new AltarComponent(-5, 2, 5, ModBlocks.largeBloodStoneBrick, 0, false, false));
+        fourthTierAltar.add(new AltarComponent(5, 2, 5, AlchemicalWizardry.specialAltarBlock[3].getBlock(), AlchemicalWizardry.specialAltarBlock[3].getMeta(), false, false));
+        fourthTierAltar.add(new AltarComponent(5, 2, -5, AlchemicalWizardry.specialAltarBlock[3].getBlock(), AlchemicalWizardry.specialAltarBlock[3].getMeta(), false, false));
+        fourthTierAltar.add(new AltarComponent(-5, 2, -5, AlchemicalWizardry.specialAltarBlock[3].getBlock(), AlchemicalWizardry.specialAltarBlock[3].getMeta(), false, false));
+        fourthTierAltar.add(new AltarComponent(-5, 2, 5, AlchemicalWizardry.specialAltarBlock[3].getBlock(), AlchemicalWizardry.specialAltarBlock[3].getMeta(), false, false));
 
         fifthTierAltar.addAll(fourthTierAltar);
-        fifthTierAltar.add(new AltarComponent(-8, -3, 8, Blocks.beacon, 0, false, false));
-        fifthTierAltar.add(new AltarComponent(-8, -3, -8, Blocks.beacon, 0, false, false));
-        fifthTierAltar.add(new AltarComponent(8, -3, -8, Blocks.beacon, 0, false, false));
-        fifthTierAltar.add(new AltarComponent(8, -3, 8, Blocks.beacon, 0, false, false));
+        fifthTierAltar.add(new AltarComponent(-8, -3, 8, AlchemicalWizardry.specialAltarBlock[4].getBlock(), AlchemicalWizardry.specialAltarBlock[4].getMeta(), false, false));
+        fifthTierAltar.add(new AltarComponent(-8, -3, -8, AlchemicalWizardry.specialAltarBlock[4].getBlock(), AlchemicalWizardry.specialAltarBlock[4].getMeta(), false, false));
+        fifthTierAltar.add(new AltarComponent(8, -3, -8, AlchemicalWizardry.specialAltarBlock[4].getBlock(), AlchemicalWizardry.specialAltarBlock[4].getMeta(), false, false));
+        fifthTierAltar.add(new AltarComponent(8, -3, 8, AlchemicalWizardry.specialAltarBlock[4].getBlock(), AlchemicalWizardry.specialAltarBlock[4].getMeta(), false, false));
         for (int i = -6; i <= 6; i++)
         {
             fifthTierAltar.add(new AltarComponent(8, -4, i, AlchemicalWizardry.fifthTierRunes[0].getBlock(), AlchemicalWizardry.fifthTierRunes[0].getMeta(), true, true));
@@ -251,15 +241,15 @@ public class UpgradedAltars
         sixthTierAltar.addAll(fifthTierAltar);
         for (int i = -4; i <= 2; i++)
         {
-        	sixthTierAltar.add(new AltarComponent(11, i, 11, Blocks.stonebrick, 0, false, false));
-        	sixthTierAltar.add(new AltarComponent(-11, i, -11, Blocks.stonebrick, 0, false, false));
-        	sixthTierAltar.add(new AltarComponent(11, i, -11, Blocks.stonebrick, 0, false, false));
-        	sixthTierAltar.add(new AltarComponent(-11, i, 11, Blocks.stonebrick, 0, false, false));
+        	sixthTierAltar.add(new AltarComponent(11, i, 11, AlchemicalWizardry.specialAltarBlock[5].getBlock(), AlchemicalWizardry.specialAltarBlock[5].getMeta(), false, false));
+        	sixthTierAltar.add(new AltarComponent(-11, i, -11, AlchemicalWizardry.specialAltarBlock[5].getBlock(), AlchemicalWizardry.specialAltarBlock[5].getMeta(), false, false));
+        	sixthTierAltar.add(new AltarComponent(11, i, -11, AlchemicalWizardry.specialAltarBlock[5].getBlock(), AlchemicalWizardry.specialAltarBlock[5].getMeta(), false, false));
+        	sixthTierAltar.add(new AltarComponent(-11, i, 11, AlchemicalWizardry.specialAltarBlock[5].getBlock(), AlchemicalWizardry.specialAltarBlock[5].getMeta(), false, false));
         }
-        sixthTierAltar.add(new AltarComponent(11, 3, 11, ModBlocks.blockCrystal, 0, false, false));
-    	sixthTierAltar.add(new AltarComponent(-11, 3, -11, ModBlocks.blockCrystal, 0, false, false));
-    	sixthTierAltar.add(new AltarComponent(11, 3, -11, ModBlocks.blockCrystal, 0, false, false));
-    	sixthTierAltar.add(new AltarComponent(-11, 3, 11, ModBlocks.blockCrystal, 0, false, false));
+        sixthTierAltar.add(new AltarComponent(11, 3, 11, AlchemicalWizardry.specialAltarBlock[6].getBlock(), AlchemicalWizardry.specialAltarBlock[6].getMeta(), false, false));
+    	sixthTierAltar.add(new AltarComponent(-11, 3, -11, AlchemicalWizardry.specialAltarBlock[6].getBlock(), AlchemicalWizardry.specialAltarBlock[6].getMeta(), false, false));
+    	sixthTierAltar.add(new AltarComponent(11, 3, -11, AlchemicalWizardry.specialAltarBlock[6].getBlock(), AlchemicalWizardry.specialAltarBlock[6].getMeta(), false, false));
+    	sixthTierAltar.add(new AltarComponent(-11, 3, 11, AlchemicalWizardry.specialAltarBlock[6].getBlock(), AlchemicalWizardry.specialAltarBlock[6].getMeta(), false, false));
         for (int i = -9; i <= 9; i++)
         {
             sixthTierAltar.add(new AltarComponent(11, -5, i, AlchemicalWizardry.sixthTierRunes[0].getBlock(), AlchemicalWizardry.sixthTierRunes[0].getMeta(), true, true));
@@ -267,48 +257,6 @@ public class UpgradedAltars
             sixthTierAltar.add(new AltarComponent(i, -5, 11, AlchemicalWizardry.sixthTierRunes[0].getBlock(), AlchemicalWizardry.sixthTierRunes[0].getMeta(), true, true));
             sixthTierAltar.add(new AltarComponent(i, -5, -11, AlchemicalWizardry.sixthTierRunes[0].getBlock(), AlchemicalWizardry.sixthTierRunes[0].getMeta(), true, true));
         }
-    }
-
-    private static boolean checkRuneSpecials(AltarComponent altarComponent, BlockStack blockStack) {
-        if (AlchemicalWizardry.isChiselLoaded) {
-            if (altarComponent.getBlock() == ModBlocks.bloodRune && CompatChecks.checkChiselBlock(blockStack, "bloodRune"))
-                return true;
-        }
-
-        if (altarComponent.getBlock() == ModBlocks.bloodRune)
-            if ((blockStack.getBlock() instanceof BloodRune) || (blockStack.getBlock() instanceof IAltarComponent && (((IAltarComponent) blockStack.getBlock()).getType() == IAltarComponent.ComponentType.BLOODRUNE)))
-                return true;
-
-        return false;
-    }
-
-    private static boolean checkSpecials(AltarComponent altarComponent, BlockStack blockStack) {
-
-        if (AlchemicalWizardry.isChiselLoaded) {
-            if (altarComponent.getBlock() == Blocks.glowstone && CompatChecks.checkChiselBlock(blockStack, "glowstone"))
-                return true;
-
-            if (altarComponent.getBlock() == ModBlocks.largeBloodStoneBrick && CompatChecks.checkChiselBlock(blockStack, "bloodBrick"))
-                return true;
-        }
-
-        if (altarComponent.getBlock() == ModBlocks.largeBloodStoneBrick)
-            if ((blockStack.getBlock() instanceof BloodStoneBrick || blockStack.getBlock() instanceof LargeBloodStoneBrick) || (blockStack.getBlock() instanceof IAltarComponent && (((IAltarComponent) blockStack.getBlock()).getType() == IAltarComponent.ComponentType.BLOODSTONE)))
-                return true;
-
-        if (altarComponent.getBlock() == ModBlocks.blockCrystal)
-            if ((blockStack.getBlock() instanceof BlockCrystal) || (blockStack.getBlock() instanceof IAltarComponent && (((IAltarComponent) blockStack.getBlock()).getType() == IAltarComponent.ComponentType.CRYSTAL)))
-                return true;
-
-        if (altarComponent.getBlock() == Blocks.glowstone)
-            if ((blockStack.getBlock() instanceof BlockGlowstone) || (blockStack.getBlock() instanceof IAltarComponent && (((IAltarComponent) blockStack.getBlock()).getType() == IAltarComponent.ComponentType.GLOWSTONE)))
-                return true;
-
-        if (altarComponent.getBlock() == Blocks.beacon)
-            if ((blockStack.getBlock() instanceof BlockBeacon) || (blockStack.getBlock() instanceof IAltarComponent && (((IAltarComponent) blockStack.getBlock()).getType() == IAltarComponent.ComponentType.BEACON)))
-                return true;
-
-        return false;
     }
 
     public static List<AltarComponent> getAltarUpgradeListForTier(int tier)

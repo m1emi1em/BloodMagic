@@ -19,9 +19,9 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.oredict.OreDictionary;
@@ -350,6 +350,15 @@ public class BloodMagicConfiguration
 			new BlockStack(ModBlocks.bloodRune, 4),
 			new BlockStack(ModBlocks.bloodRune, 5)
 		});
+		AlchemicalWizardry.specialAltarBlock = getAltarRunesForTier("specialBlocks", new BlockStack[] {
+			new BlockStack(Blocks.stonebrick, 0),
+			new BlockStack(Blocks.glowstone, 0),
+			new BlockStack(Blocks.stonebrick, 0),
+			new BlockStack(ModBlocks.largeBloodStoneBrick, 0),
+			new BlockStack(Blocks.beacon, 0),
+			new BlockStack(Blocks.stonebrick, 0),
+			new BlockStack(ModBlocks.blockCrystal, 0)
+		});
 		config.save();
 	}
 
@@ -506,7 +515,7 @@ public class BloodMagicConfiguration
 					metadata = 0;
 				}
 			}
-			if (block == null || block instanceof ITileEntityProvider)
+			if (block == null)
 			{
 				property.set(defaultNames);
 				return defaultValues;

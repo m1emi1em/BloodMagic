@@ -305,6 +305,7 @@ public class AlchemicalWizardry
     public static BlockStack[] fourthTierRunes = new BlockStack[10];
     public static BlockStack[] fifthTierRunes = new BlockStack[10];
     public static BlockStack[] sixthTierRunes = new BlockStack[10];
+    public static BlockStack[] specialAltarBlock = new BlockStack[7];
 
     public static List<Class> wellBlacklist;
 
