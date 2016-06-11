@@ -19,6 +19,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.common.config.Configuration;
@@ -505,7 +506,7 @@ public class BloodMagicConfiguration
 					metadata = 0;
 				}
 			}
-			if (block == null)
+			if (block == null || block instanceof ITileEntityProvider)
 			{
 				property.set(defaultNames);
 				return defaultValues;
