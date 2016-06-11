@@ -7,21 +7,22 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import WayofTime.alchemicalWizardry.api.BlockStack;
-import WayofTime.alchemicalWizardry.common.AlchemicalWizardryEventHooks;
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraftforge.common.config.Configuration;
 import WayofTime.alchemicalWizardry.api.rituals.Rituals;
 import WayofTime.alchemicalWizardry.client.renderer.ColourThreshold;
 import WayofTime.alchemicalWizardry.client.renderer.RenderHelper;
+import WayofTime.alchemicalWizardry.common.AlchemicalWizardryEventHooks;
 import WayofTime.alchemicalWizardry.common.demonVillage.DemonVillagePath;
 import WayofTime.alchemicalWizardry.common.demonVillage.tileEntity.TEDemonPortal;
 import WayofTime.alchemicalWizardry.common.items.armour.BoundArmour;
 import WayofTime.alchemicalWizardry.common.summoning.meteor.MeteorParadigm;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.block.Block;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
@@ -194,18 +195,18 @@ public class BloodMagicConfiguration
 		TEDemonPortal.demonPortalChance = (float)(config.get(tempDemonConfigs, "Demon Portal Chance", 0.5f).getDouble());
 		TEDemonPortal.demonHoardChance = (float)(config.get(tempDemonConfigs, "Demon Hoard Chance", 0.8f).getDouble());
 		TEDemonPortal.portalTickRate = (float)(config.get(tempDemonConfigs, "Portal Tick Rate", 0.1f).getDouble());
-		
+
 		DemonVillagePath.canGoDown = config.get(tempDemonConfigs, "canRoadGoDown", true).getBoolean();
 		DemonVillagePath.tunnelIfObstructed = config.get(tempDemonConfigs, "tunnelIfObstructed", false).getBoolean();
 		DemonVillagePath.createBridgeInAirIfObstructed = config.get(tempDemonConfigs, "createBridgeInAirIfObstructed", false).getBoolean();
 
 		TEDemonPortal.limit = config.get(tempDemonConfigs, "demonGridSpaceLimit", 100).getInt();
 		TEDemonPortal.demonLimit = config.get(tempDemonConfigs, "demonHoardLimit", 100).getInt();
-		
+
 		AlchemicalWizardry.isDemonRitualCreativeOnly = config.get(tempDemonConfigs, "IsDemonRitualCreativeOnly", false).getBoolean();
-		
+
 		BoundArmour.tryComplexRendering = config.get("WimpySettings", "UseFancyBoundArmour", true).getBoolean(true);
-		
+
 //		ItemIncense.itemDuration = config.get("TestIncenseSettings", "ItemDuration", 100).getInt();
 //		ItemIncense.minValue = config.get("TestIncenseSettings", "MinValue", 0).getInt();
 //		ItemIncense.maxValue = config.get("TestIncenseSettings", "MaxValue", 100).getInt();
@@ -283,6 +284,71 @@ public class BloodMagicConfiguration
 			AlchemicalWizardry.displayRitualAnimation = config.get("ClientSettings", "Display Ritual Animation", true).getBoolean(true);
 		}
 
+		config.save();
+	}
+
+	public static void finishLoading()
+	{
+		AlchemicalWizardry.secondTierRunes = BloodMagicConfiguration.getAltarRunesForTier("secondTier", new BlockStack[] {
+			new BlockStack(ModBlocks.bloodRune, 0),
+			new BlockStack(ModBlocks.speedRune, 0),
+			new BlockStack(ModBlocks.efficiencyRune, 0),
+			new BlockStack(ModBlocks.runeOfSacrifice, 0),
+			new BlockStack(ModBlocks.runeOfSelfSacrifice, 0),
+			new BlockStack(ModBlocks.bloodRune, 1),
+			new BlockStack(ModBlocks.bloodRune, 2),
+			new BlockStack(ModBlocks.bloodRune, 3),
+			new BlockStack(ModBlocks.bloodRune, 4),
+			new BlockStack(ModBlocks.bloodRune, 5)
+		});
+		AlchemicalWizardry.thirdTierRunes = BloodMagicConfiguration.getAltarRunesForTier("thirdTier", new BlockStack[] {
+			new BlockStack(ModBlocks.bloodRune, 0),
+			new BlockStack(ModBlocks.speedRune, 0),
+			new BlockStack(ModBlocks.efficiencyRune, 0),
+			new BlockStack(ModBlocks.runeOfSacrifice, 0),
+			new BlockStack(ModBlocks.runeOfSelfSacrifice, 0),
+			new BlockStack(ModBlocks.bloodRune, 1),
+			new BlockStack(ModBlocks.bloodRune, 2),
+			new BlockStack(ModBlocks.bloodRune, 3),
+			new BlockStack(ModBlocks.bloodRune, 4),
+			new BlockStack(ModBlocks.bloodRune, 5)
+		});
+		AlchemicalWizardry.fourthTierRunes = BloodMagicConfiguration.getAltarRunesForTier("fourthTier", new BlockStack[] {
+			new BlockStack(ModBlocks.bloodRune, 0),
+			new BlockStack(ModBlocks.speedRune, 0),
+			new BlockStack(ModBlocks.efficiencyRune, 0),
+			new BlockStack(ModBlocks.runeOfSacrifice, 0),
+			new BlockStack(ModBlocks.runeOfSelfSacrifice, 0),
+			new BlockStack(ModBlocks.bloodRune, 1),
+			new BlockStack(ModBlocks.bloodRune, 2),
+			new BlockStack(ModBlocks.bloodRune, 3),
+			new BlockStack(ModBlocks.bloodRune, 4),
+			new BlockStack(ModBlocks.bloodRune, 5)
+		});
+		AlchemicalWizardry.fifthTierRunes = BloodMagicConfiguration.getAltarRunesForTier("fifthTier", new BlockStack[] {
+			new BlockStack(ModBlocks.bloodRune, 0),
+			new BlockStack(ModBlocks.speedRune, 0),
+			new BlockStack(ModBlocks.efficiencyRune, 0),
+			new BlockStack(ModBlocks.runeOfSacrifice, 0),
+			new BlockStack(ModBlocks.runeOfSelfSacrifice, 0),
+			new BlockStack(ModBlocks.bloodRune, 1),
+			new BlockStack(ModBlocks.bloodRune, 2),
+			new BlockStack(ModBlocks.bloodRune, 3),
+			new BlockStack(ModBlocks.bloodRune, 4),
+			new BlockStack(ModBlocks.bloodRune, 5)
+		});
+		AlchemicalWizardry.sixthTierRunes = BloodMagicConfiguration.getAltarRunesForTier("sixthTier", new BlockStack[] {
+			new BlockStack(ModBlocks.bloodRune, 0),
+			new BlockStack(ModBlocks.speedRune, 0),
+			new BlockStack(ModBlocks.efficiencyRune, 0),
+			new BlockStack(ModBlocks.runeOfSacrifice, 0),
+			new BlockStack(ModBlocks.runeOfSelfSacrifice, 0),
+			new BlockStack(ModBlocks.bloodRune, 1),
+			new BlockStack(ModBlocks.bloodRune, 2),
+			new BlockStack(ModBlocks.bloodRune, 3),
+			new BlockStack(ModBlocks.bloodRune, 4),
+			new BlockStack(ModBlocks.bloodRune, 5)
+		});
 		config.save();
 	}
 
@@ -365,11 +431,11 @@ public class BloodMagicConfiguration
 	}
 
 	private static void buildTeleposerBlacklist() {
-		
+
 	        // Make sure it's empty before setting the blacklist.
         	// Otherwise, reloading the config while in-game will duplicate the list.
         	AlchemicalWizardryEventHooks.teleposerBlacklist.clear();
-		
+
 		for (String blockSet : BloodMagicConfiguration.teleposerBlacklist) {
 			String[] blockData = blockSet.split(":");
 
@@ -401,5 +467,51 @@ public class BloodMagicConfiguration
 		}
 		// only got here if we didn't return false
 		return true;
+	}
+
+	private static BlockStack[] getAltarRunesForTier(String tierName, BlockStack[] defaultValues)
+	{
+		String[] defaultNames = new String[defaultValues.length];
+		for (int i = 0; i < defaultValues.length; i++)
+		{
+			defaultNames[i] = Block.blockRegistry.getNameForObject(defaultValues[i].getBlock()) + ":" + defaultValues[i].getMeta();
+		}
+		Property property = config.get("rune overrides", tierName, defaultNames);
+		String[] names = property.getStringList();
+		if (names.length != defaultNames.length)
+		{
+			property.set(defaultNames);
+			return defaultValues;
+		}
+		BlockStack[] blockStacks = new BlockStack[names.length];
+		for (int i = 0; i < names.length; i++)
+		{
+			String[] parts = names[i].split(":");
+			if (parts.length < 2 || parts.length > 3)
+			{
+				property.set(defaultNames);
+				return defaultValues;
+			}
+			Block block = GameRegistry.findBlock(parts[0], parts[1]);
+			int metadata = 0;
+			if (parts.length == 3)
+			{
+				try
+				{
+					metadata = Integer.parseInt(parts[2]);
+				}
+				catch (NumberFormatException exception)
+				{
+					metadata = 0;
+				}
+			}
+			if (block == null)
+			{
+				property.set(defaultNames);
+				return defaultValues;
+			}
+			blockStacks[i] = new BlockStack(block,  metadata);
+		}
+		return blockStacks;
 	}
 }
