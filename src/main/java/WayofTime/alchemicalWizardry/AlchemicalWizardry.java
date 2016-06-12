@@ -11,6 +11,71 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import WayofTime.alchemicalWizardry.api.BlockStack;
+import WayofTime.alchemicalWizardry.api.alchemy.AlchemicalPotionCreationHandler;
+import WayofTime.alchemicalWizardry.api.alchemy.AlchemyRecipeRegistry;
+import WayofTime.alchemicalWizardry.api.alchemy.energy.ReagentRegistry;
+import WayofTime.alchemicalWizardry.api.alchemy.energy.ReagentStack;
+import WayofTime.alchemicalWizardry.api.altarRecipeRegistry.AltarRecipeRegistry;
+import WayofTime.alchemicalWizardry.api.bindingRegistry.BindingRegistry;
+import WayofTime.alchemicalWizardry.api.bindingRegistry.UnbindingRegistry;
+import WayofTime.alchemicalWizardry.api.compress.CompressionRegistry;
+import WayofTime.alchemicalWizardry.api.harvest.HarvestRegistry;
+import WayofTime.alchemicalWizardry.api.items.ShapedBloodOrbRecipe;
+import WayofTime.alchemicalWizardry.api.items.ShapelessBloodOrbRecipe;
+import WayofTime.alchemicalWizardry.api.rituals.Rituals;
+import WayofTime.alchemicalWizardry.api.sacrifice.PlayerSacrificeHandler;
+import WayofTime.alchemicalWizardry.api.soulNetwork.ComplexNetworkHandler;
+import WayofTime.alchemicalWizardry.api.spell.*;
+import WayofTime.alchemicalWizardry.api.summoningRegistry.SummoningRegistry;
+import WayofTime.alchemicalWizardry.common.*;
+import WayofTime.alchemicalWizardry.common.achievements.ModAchievements;
+import WayofTime.alchemicalWizardry.common.alchemy.CombinedPotionRegistry;
+import WayofTime.alchemicalWizardry.common.block.ArmourForge;
+import WayofTime.alchemicalWizardry.common.bloodAltarUpgrade.UpgradedAltars;
+import WayofTime.alchemicalWizardry.common.book.BloodMagicGuide;
+import WayofTime.alchemicalWizardry.common.commands.CommandBloodMagic;
+import WayofTime.alchemicalWizardry.common.compress.AdvancedCompressionHandler;
+import WayofTime.alchemicalWizardry.common.compress.BaseCompressionHandler;
+import WayofTime.alchemicalWizardry.common.compress.StorageBlockCraftingManager;
+import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.DemonPacketMinorGrunt;
+import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.DemonPacketRegistry;
+import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.*;
+import WayofTime.alchemicalWizardry.common.demonVillage.loot.DemonVillageLootRegistry;
+import WayofTime.alchemicalWizardry.common.demonVillage.tileEntity.TEDemonChest;
+import WayofTime.alchemicalWizardry.common.demonVillage.tileEntity.TEDemonPortal;
+import WayofTime.alchemicalWizardry.common.entity.mob.*;
+import WayofTime.alchemicalWizardry.common.guide.RecipeHolder;
+import WayofTime.alchemicalWizardry.common.harvest.*;
+import WayofTime.alchemicalWizardry.common.items.ItemIncense;
+import WayofTime.alchemicalWizardry.common.items.ItemMailOrderCatalogue;
+import WayofTime.alchemicalWizardry.common.items.ItemRitualDiviner;
+import WayofTime.alchemicalWizardry.common.items.armour.OmegaArmour;
+import WayofTime.alchemicalWizardry.common.items.forestry.ItemBloodFrame;
+import WayofTime.alchemicalWizardry.common.items.sigil.holding.HoldingPacketHandler;
+import WayofTime.alchemicalWizardry.common.items.thaumcraft.ItemSanguineArmour;
+import WayofTime.alchemicalWizardry.common.omega.*;
+import WayofTime.alchemicalWizardry.common.potion.*;
+import WayofTime.alchemicalWizardry.common.renderer.AlchemyCircleRenderer;
+import WayofTime.alchemicalWizardry.common.rituals.*;
+import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.*;
+import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.*;
+import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.*;
+import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.*;
+import WayofTime.alchemicalWizardry.common.spell.simple.*;
+import WayofTime.alchemicalWizardry.common.summoning.SummoningHelperAW;
+import WayofTime.alchemicalWizardry.common.summoning.meteor.MeteorRegistry;
+import WayofTime.alchemicalWizardry.common.thread.CommandDownloadGAPI;
+import WayofTime.alchemicalWizardry.common.tileEntity.*;
+import WayofTime.alchemicalWizardry.common.tileEntity.gui.GuiHandler;
+import WayofTime.alchemicalWizardry.common.tweaker.MineTweakerIntegration;
+import cpw.mods.fml.common.*;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -30,276 +95,19 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import thaumcraft.api.ItemApi;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import WayofTime.alchemicalWizardry.api.alchemy.AlchemicalPotionCreationHandler;
-import WayofTime.alchemicalWizardry.api.alchemy.AlchemyRecipeRegistry;
-import WayofTime.alchemicalWizardry.api.alchemy.energy.ReagentRegistry;
-import WayofTime.alchemicalWizardry.api.alchemy.energy.ReagentStack;
-import WayofTime.alchemicalWizardry.api.altarRecipeRegistry.AltarRecipeRegistry;
-import WayofTime.alchemicalWizardry.api.bindingRegistry.BindingRegistry;
-import WayofTime.alchemicalWizardry.api.bindingRegistry.UnbindingRegistry;
-import WayofTime.alchemicalWizardry.api.compress.CompressionRegistry;
-import WayofTime.alchemicalWizardry.api.harvest.HarvestRegistry;
-import WayofTime.alchemicalWizardry.api.items.ShapedBloodOrbRecipe;
-import WayofTime.alchemicalWizardry.api.items.ShapelessBloodOrbRecipe;
-import WayofTime.alchemicalWizardry.api.rituals.Rituals;
-import WayofTime.alchemicalWizardry.api.sacrifice.PlayerSacrificeHandler;
-import WayofTime.alchemicalWizardry.api.soulNetwork.ComplexNetworkHandler;
-import WayofTime.alchemicalWizardry.api.spell.SpellEffectRegistry;
-import WayofTime.alchemicalWizardry.api.spell.SpellParadigmMelee;
-import WayofTime.alchemicalWizardry.api.spell.SpellParadigmProjectile;
-import WayofTime.alchemicalWizardry.api.spell.SpellParadigmSelf;
-import WayofTime.alchemicalWizardry.api.spell.SpellParadigmTool;
-import WayofTime.alchemicalWizardry.api.summoningRegistry.SummoningRegistry;
-import WayofTime.alchemicalWizardry.common.AlchemicalWizardryEventHooks;
-import WayofTime.alchemicalWizardry.common.AlchemicalWizardryFuelHandler;
-import WayofTime.alchemicalWizardry.common.ClientToServerPacketHandler;
-import WayofTime.alchemicalWizardry.common.CommonProxy;
-import WayofTime.alchemicalWizardry.common.LifeBucketHandler;
-import WayofTime.alchemicalWizardry.common.LifeEssence;
-import WayofTime.alchemicalWizardry.common.ModLivingDropsEvent;
-import WayofTime.alchemicalWizardry.common.NewPacketHandler;
-import WayofTime.alchemicalWizardry.common.achievements.ModAchievements;
-import WayofTime.alchemicalWizardry.common.alchemy.CombinedPotionRegistry;
-import WayofTime.alchemicalWizardry.common.block.ArmourForge;
-import WayofTime.alchemicalWizardry.common.bloodAltarUpgrade.UpgradedAltars;
-import WayofTime.alchemicalWizardry.common.book.BloodMagicGuide;
-import WayofTime.alchemicalWizardry.common.commands.CommandBloodMagic;
-import WayofTime.alchemicalWizardry.common.compress.AdvancedCompressionHandler;
-import WayofTime.alchemicalWizardry.common.compress.BaseCompressionHandler;
-import WayofTime.alchemicalWizardry.common.compress.StorageBlockCraftingManager;
-import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.DemonPacketMinorGrunt;
-import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.DemonPacketRegistry;
-import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.EntityMinorDemonGrunt;
-import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.EntityMinorDemonGruntEarth;
-import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.EntityMinorDemonGruntFire;
-import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.EntityMinorDemonGruntGuardian;
-import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.EntityMinorDemonGruntGuardianEarth;
-import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.EntityMinorDemonGruntGuardianFire;
-import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.EntityMinorDemonGruntGuardianIce;
-import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.EntityMinorDemonGruntGuardianWind;
-import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.EntityMinorDemonGruntIce;
-import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.EntityMinorDemonGruntWind;
-import WayofTime.alchemicalWizardry.common.demonVillage.loot.DemonVillageLootRegistry;
-import WayofTime.alchemicalWizardry.common.demonVillage.tileEntity.TEDemonChest;
-import WayofTime.alchemicalWizardry.common.demonVillage.tileEntity.TEDemonPortal;
-import WayofTime.alchemicalWizardry.common.entity.mob.EntityAirElemental;
-import WayofTime.alchemicalWizardry.common.entity.mob.EntityBileDemon;
-import WayofTime.alchemicalWizardry.common.entity.mob.EntityBoulderFist;
-import WayofTime.alchemicalWizardry.common.entity.mob.EntityEarthElemental;
-import WayofTime.alchemicalWizardry.common.entity.mob.EntityFallenAngel;
-import WayofTime.alchemicalWizardry.common.entity.mob.EntityFireElemental;
-import WayofTime.alchemicalWizardry.common.entity.mob.EntityHolyElemental;
-import WayofTime.alchemicalWizardry.common.entity.mob.EntityIceDemon;
-import WayofTime.alchemicalWizardry.common.entity.mob.EntityLowerGuardian;
-import WayofTime.alchemicalWizardry.common.entity.mob.EntityShade;
-import WayofTime.alchemicalWizardry.common.entity.mob.EntityShadeElemental;
-import WayofTime.alchemicalWizardry.common.entity.mob.EntitySmallEarthGolem;
-import WayofTime.alchemicalWizardry.common.entity.mob.EntityWaterElemental;
-import WayofTime.alchemicalWizardry.common.entity.mob.EntityWingedFireDemon;
-import WayofTime.alchemicalWizardry.common.guide.RecipeHolder;
-import WayofTime.alchemicalWizardry.common.harvest.AgriCraftCropHarvestHandler;
-import WayofTime.alchemicalWizardry.common.harvest.BloodMagicHarvestHandler;
-import WayofTime.alchemicalWizardry.common.harvest.CactusReedHarvestHandler;
-import WayofTime.alchemicalWizardry.common.harvest.GourdHarvestHandler;
-import WayofTime.alchemicalWizardry.common.harvest.PamHarvestCompatRegistry;
-import WayofTime.alchemicalWizardry.common.items.ItemIncense;
-import WayofTime.alchemicalWizardry.common.items.ItemMailOrderCatalogue;
-import WayofTime.alchemicalWizardry.common.items.ItemRitualDiviner;
-import WayofTime.alchemicalWizardry.common.items.armour.OmegaArmour;
-import WayofTime.alchemicalWizardry.common.items.forestry.ItemBloodFrame;
-import WayofTime.alchemicalWizardry.common.items.sigil.holding.HoldingPacketHandler;
-import WayofTime.alchemicalWizardry.common.items.thaumcraft.ItemSanguineArmour;
-import WayofTime.alchemicalWizardry.common.omega.OmegaParadigmEarth;
-import WayofTime.alchemicalWizardry.common.omega.OmegaParadigmFire;
-import WayofTime.alchemicalWizardry.common.omega.OmegaParadigmWater;
-import WayofTime.alchemicalWizardry.common.omega.OmegaParadigmWind;
-import WayofTime.alchemicalWizardry.common.omega.OmegaRegistry;
-import WayofTime.alchemicalWizardry.common.potion.PotionAmphibian;
-import WayofTime.alchemicalWizardry.common.potion.PotionBoost;
-import WayofTime.alchemicalWizardry.common.potion.PotionDeaf;
-import WayofTime.alchemicalWizardry.common.potion.PotionDemonCloak;
-import WayofTime.alchemicalWizardry.common.potion.PotionDrowning;
-import WayofTime.alchemicalWizardry.common.potion.PotionFeatherFall;
-import WayofTime.alchemicalWizardry.common.potion.PotionFireFuse;
-import WayofTime.alchemicalWizardry.common.potion.PotionFlameCloak;
-import WayofTime.alchemicalWizardry.common.potion.PotionFlight;
-import WayofTime.alchemicalWizardry.common.potion.PotionHeavyHeart;
-import WayofTime.alchemicalWizardry.common.potion.PotionIceCloak;
-import WayofTime.alchemicalWizardry.common.potion.PotionInhibit;
-import WayofTime.alchemicalWizardry.common.potion.PotionPlanarBinding;
-import WayofTime.alchemicalWizardry.common.potion.PotionProjectileProtect;
-import WayofTime.alchemicalWizardry.common.potion.PotionReciprocation;
-import WayofTime.alchemicalWizardry.common.potion.PotionSoulFray;
-import WayofTime.alchemicalWizardry.common.potion.PotionSoulHarden;
-import WayofTime.alchemicalWizardry.common.renderer.AlchemyCircleRenderer;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectAnimalGrowth;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectAutoAlchemy;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectBinding;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectBiomeChanger;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectContainment;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectCrafting;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectCrushing;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectDemonPortal;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectEllipsoid;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectEvaporation;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectExpulsion;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectFeatheredEarth;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectFeatheredKnife;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectFlight;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectFullStomach;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectGrowth;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectHarvest;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectHealing;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectInterdiction;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectItemRouting;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectItemSuction;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectJumping;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectLava;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectLeap;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectLifeConduit;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectMagnetic;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectOmegaStalling;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectOmegaTest;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectSpawnWard;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectSphereCreator;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectSummonMeteor;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectSupression;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectUnbinding;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectVeilOfEvil;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectWater;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectWellOfSuffering;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSEMeleeDefaultEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSEMeleeDefensiveEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSEMeleeEnvironmentalEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSEMeleeOffensiveEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSEProjectileDefaultEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSEProjectileDefensiveEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSEProjectileEnvironmentalEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSEProjectileOffensiveEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSESelfDefaultEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSESelfDefensiveEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSESelfEnvironmentalEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSESelfOffensiveEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSEToolDefaultEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSEToolDefensiveEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSEToolEnvironmentalEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.earth.CSEToolOffensiveEarth;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSEMeleeDefaultFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSEMeleeDefensiveFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSEMeleeEnvironmentalFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSEMeleeOffensiveFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSEProjectileDefaultFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSEProjectileDefensiveFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSEProjectileEnvironmentalFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSEProjectileOffensiveFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSESelfDefaultFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSESelfDefensiveFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSESelfEnvironmentalFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSESelfOffensiveFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSEToolDefaultFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSEToolDefensiveFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSEToolEnvironmentalFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.fire.CSEToolOffensiveFire;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSEMeleeDefaultIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSEMeleeDefensiveIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSEMeleeEnvironmentalIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSEMeleeOffensiveIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSEProjectileDefaultIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSEProjectileDefensiveIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSEProjectileEnvironmentalIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSEProjectileOffensiveIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSESelfDefaultIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSESelfDefensiveIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSESelfEnvironmentalIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSESelfOffensiveIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSEToolDefaultIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSEToolDefensiveIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSEToolEnvironmentalIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.CSEToolOffensiveIce;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSEMeleeDefaultWind;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSEMeleeDefensiveWind;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSEMeleeEnvironmentalWind;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSEMeleeOffensiveWind;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSEProjectileDefaultWind;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSEProjectileDefensiveWind;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSEProjectileEnvironmentalWind;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSEProjectileOffensiveWind;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSESelfDefaultWind;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSESelfDefensiveWind;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSESelfEnvironmentalWind;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSESelfOffensiveWind;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSEToolDefaultWind;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSEToolDefensiveWind;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSEToolEnvironmentalWind;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.CSEToolOffensiveWind;
-import WayofTime.alchemicalWizardry.common.spell.simple.HomSpellRegistry;
-import WayofTime.alchemicalWizardry.common.spell.simple.SpellEarthBender;
-import WayofTime.alchemicalWizardry.common.spell.simple.SpellExplosions;
-import WayofTime.alchemicalWizardry.common.spell.simple.SpellFireBurst;
-import WayofTime.alchemicalWizardry.common.spell.simple.SpellFrozenWater;
-import WayofTime.alchemicalWizardry.common.spell.simple.SpellHolyBlast;
-import WayofTime.alchemicalWizardry.common.spell.simple.SpellLightningBolt;
-import WayofTime.alchemicalWizardry.common.spell.simple.SpellTeleport;
-import WayofTime.alchemicalWizardry.common.spell.simple.SpellWateryGrave;
-import WayofTime.alchemicalWizardry.common.spell.simple.SpellWindGust;
-import WayofTime.alchemicalWizardry.common.summoning.SummoningHelperAW;
-import WayofTime.alchemicalWizardry.common.summoning.meteor.MeteorRegistry;
-import WayofTime.alchemicalWizardry.common.thread.CommandDownloadGAPI;
-import WayofTime.alchemicalWizardry.common.tileEntity.TEAlchemicCalcinator;
-import WayofTime.alchemicalWizardry.common.tileEntity.TEAltar;
-import WayofTime.alchemicalWizardry.common.tileEntity.TEBellJar;
-import WayofTime.alchemicalWizardry.common.tileEntity.TEConduit;
-import WayofTime.alchemicalWizardry.common.tileEntity.TECrucible;
-import WayofTime.alchemicalWizardry.common.tileEntity.TEHomHeart;
-import WayofTime.alchemicalWizardry.common.tileEntity.TEMasterStone;
-import WayofTime.alchemicalWizardry.common.tileEntity.TEMimicBlock;
-import WayofTime.alchemicalWizardry.common.tileEntity.TEOrientable;
-import WayofTime.alchemicalWizardry.common.tileEntity.TEPedestal;
-import WayofTime.alchemicalWizardry.common.tileEntity.TEPlinth;
-import WayofTime.alchemicalWizardry.common.tileEntity.TEReagentConduit;
-import WayofTime.alchemicalWizardry.common.tileEntity.TESchematicSaver;
-import WayofTime.alchemicalWizardry.common.tileEntity.TESocket;
-import WayofTime.alchemicalWizardry.common.tileEntity.TESpectralBlock;
-import WayofTime.alchemicalWizardry.common.tileEntity.TESpectralContainer;
-import WayofTime.alchemicalWizardry.common.tileEntity.TESpellEffectBlock;
-import WayofTime.alchemicalWizardry.common.tileEntity.TESpellEnhancementBlock;
-import WayofTime.alchemicalWizardry.common.tileEntity.TESpellModifierBlock;
-import WayofTime.alchemicalWizardry.common.tileEntity.TESpellParadigmBlock;
-import WayofTime.alchemicalWizardry.common.tileEntity.TETeleposer;
-import WayofTime.alchemicalWizardry.common.tileEntity.TEWritingTable;
-import WayofTime.alchemicalWizardry.common.tileEntity.gui.GuiHandler;
-import WayofTime.alchemicalWizardry.common.tweaker.MineTweakerIntegration;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = "AWWayofTime", name = "AlchemicalWizardry", version = "v1.3.3", guiFactory = "WayofTime.alchemicalWizardry.client.gui.ConfigGuiFactory")
 public class AlchemicalWizardry
 {
 	public static boolean parseTextFiles = false;
-	
+
     public static boolean doMeteorsDestroyBlocks = true;
     public static String[] diamondMeteorArray;
     public static int diamondMeteorRadius;
@@ -492,6 +300,13 @@ public class AlchemicalWizardry
     public static boolean causeHungerChatMessage = true;
     public static boolean disableBoundToolsRightClick;
 
+    public static BlockStack[] secondTierRunes = new BlockStack[10];
+    public static BlockStack[] thirdTierRunes = new BlockStack[10];
+    public static BlockStack[] fourthTierRunes = new BlockStack[10];
+    public static BlockStack[] fifthTierRunes = new BlockStack[10];
+    public static BlockStack[] sixthTierRunes = new BlockStack[10];
+    public static BlockStack[] specialAltarBlock = new BlockStack[7];
+
     public static List<Class> wellBlacklist;
 
 	public static Logger logger = LogManager.getLogger("BloodMagic");
@@ -547,7 +362,7 @@ public class AlchemicalWizardry
 	public static String entityMinorDemonGruntGuardianWindID = "AW022";
 	public static String entityMinorDemonGruntGuardianIceID = "AW023";
 	public static String entityMinorDemonGruntGuardianEarthID = "AW024";
-	
+
 	public static boolean isDemonRitualCreativeOnly = false;
 
     public static Fluid lifeEssenceFluid;
@@ -605,7 +420,7 @@ public class AlchemicalWizardry
         TEDemonPortal.loadBuildingList();
 
         ComplexNetworkHandler.load();
-        
+
         MinecraftForge.EVENT_BUS.register(new LifeBucketHandler());
         BloodMagicConfiguration.init(new File(event.getModConfigurationDirectory(), "AWWayofTime.cfg"));
 
@@ -883,6 +698,7 @@ public class AlchemicalWizardry
         GameRegistry.registerFuelHandler(new AlchemicalWizardryFuelHandler());
 
         //Gui registration
+        BloodMagicConfiguration.finishLoading();
         UpgradedAltars.loadAltars();
         ArmourForge.initializeRecipes();
         TEPlinth.initialize();
@@ -986,7 +802,7 @@ public class AlchemicalWizardry
         SummoningRegistry.registerSummon(new SummoningHelperAW(entityShadeElementalID), new ItemStack[]{tennebraeStack, tennebraeStack, tennebraeStack, tennebraeStack, tennebraeStack, tennebraeStack}, new ItemStack[]{}, new ItemStack[]{}, 0, 4);
         SummoningRegistry.registerSummon(new SummoningHelperAW(entityHolyElementalID), new ItemStack[]{sanctusStack, sanctusStack, sanctusStack, sanctusStack, sanctusStack, sanctusStack}, new ItemStack[]{}, new ItemStack[]{}, 0, 4);
 //        SummoningRegistry.registerSummon(new SummoningHelperAW(this.entityMinorDemonGruntID), new ItemStack[]{incendiumStack, sanctusStack, sanctusStack, sanctusStack, sanctusStack, sanctusStack}, new ItemStack[]{}, new ItemStack[]{}, 0, 4);
-        
+
         //Custom mobs
         EntityRegistry.registerModEntity(EntityFallenAngel.class, "FallenAngel", 20, this, 80, 3, true);
         EntityRegistry.registerModEntity(EntityLowerGuardian.class, "LowerGuardian", 21, this, 80, 3, true);
@@ -1031,7 +847,7 @@ public class AlchemicalWizardry
         MeteorRegistry.registerMeteorParadigm(new ItemStack(Items.nether_star), netherStarMeteorArray, netherStarMeteorRadius);
 
         ItemStack stickStack = new ItemStack(Items.stick, 1, craftingConstant);
-        
+
         //Register spell component recipes
         ItemStack complexSpellCrystalStack = new ItemStack(ModItems.itemComplexSpellCrystal);
         ItemStack quartzRodStack = new ItemStack(ModItems.baseItems, 1, 0);
@@ -1071,7 +887,7 @@ public class AlchemicalWizardry
 
         GameRegistry.addRecipe(new ItemStack(ModBlocks.blockCrystal), "lsl", "sls", "lsl", 'l', lifeShardStack, 's', soulShardStack);
         GameRegistry.addRecipe(new ItemStack(ModBlocks.blockCrystal, 4, 1), "ss", "ss", 's', new ItemStack(ModBlocks.blockCrystal, 1, 0));
-        
+
         ItemStack magicalesCraftedCableStack = new ItemStack(ModItems.baseItems, 5, 2);
         ItemStack crackedRunicPlateStackCrafted = new ItemStack(ModItems.baseItems, 2, 15);
 
@@ -1110,13 +926,13 @@ public class AlchemicalWizardry
         GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(ModItems.itemHarvestSigil), "mgm", "gsg", "mom", 's', etherealSlateStack, 'o', archmageBloodOrbStack, 'g', new ItemStack(Items.golden_hoe), 'm', new ItemStack(Blocks.dirt)));
         GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(ModBlocks.bloodRune, 1, 5), "bsb", "grg", "bob", 's', etherealSlateStack, 'o', archmageBloodOrbStack, 'r', speedRuneStack, 'b', emptyBucketStack, 'g', goldIngotStack));
         GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(ModItems.itemCompressionSigil), "pop", "csc", "obo", 'b', masterBloodOrbStack, 'p', new ItemStack(Blocks.piston), 'c', new ItemStack(Blocks.crafting_table), 's', demonSlateStack, 'o', obsidianStack));
-        
+
         AlchemyRecipeRegistry.registerRecipe(crackedRunicPlateStackCrafted, 10, new ItemStack[]{imbuedSlateStack, imbuedSlateStack, concentratedCatalystStack}, 4);
         AlchemyRecipeRegistry.registerRecipe(runicPlateStack, 30, new ItemStack[]{crackedRunicPlateStack, terraeStack}, 5);
         AlchemyRecipeRegistry.registerRecipe(imbuedRunicPlateStack, 100, new ItemStack[]{magicalesStack, incendiumStack, runicPlateStack, runicPlateStack, aquasalusStack}, 5);
         AlchemyRecipeRegistry.registerRecipe(complexSpellCrystalStack, 50, new ItemStack[]{new ItemStack(ModItems.blankSpell), weakBloodShardStack, weakBloodShardStack, diamondStack, goldIngotStack}, 3);
         AlchemyRecipeRegistry.registerRecipe(soulRunicPlateStack, 150, new ItemStack[]{imbuedRunicPlateStack, soulShardStack, soulShardStack, weakBloodShardStack, diamondStack}, 6);
-        
+
         GameRegistry.addRecipe(new ItemStack(ModBlocks.blockConduit, 1, 0), "q q", "ccc", "q q", 'q', quartzRodStack, 'c', magicalesCableStack);
 
         GameRegistry.addRecipe(new ItemStack(ModBlocks.blockSpellParadigm, 1, 0), "gb ", "pcw", "gb ", 'p', paradigmBackPlateStack, 'c', projectileCoreStack, 'g', goldIngotStack, 'b', stoneBraceStack, 'w', outputCableStack);
@@ -1163,7 +979,7 @@ public class AlchemicalWizardry
         GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(ModItems.itemSigilOfEnderSeverance), "ptp", "ese", "pop", 's', new ItemStack(ModItems.demonicSlate), 't', weakBloodShardStack, 'o', masterBloodOrbStack, 'e', new ItemStack(Items.ender_eye), 'p', new ItemStack(Items.ender_pearl)));
 
         GameRegistry.addShapelessRecipe(enderShardCraftedStack, weakBloodShardStack, new ItemStack(Items.ender_pearl));
-        
+
         GameRegistry.addRecipe(new ItemStack(ModItems.inputRoutingFocus), "sgs", "geg", "sgs", 'e', enderShardStack, 's', stickStack, 'g', glassStack);
         GameRegistry.addRecipe(new ItemStack(ModItems.outputRoutingFocus, 1, 0), "sgs", "geg", "sgs", 'e', enderShardStack, 's', stickStack, 'g', stoneStack);
         GameRegistry.addRecipe(new ItemStack(ModItems.outputRoutingFocus, 1, 1), "sgs", "geg", "sgs", 'e', enderShardStack, 's', stickStack, 'g', new ItemStack(Blocks.sandstone));
@@ -1176,7 +992,7 @@ public class AlchemicalWizardry
         GameRegistry.addRecipe(new ItemStack(ModBlocks.blockEnchantmentGlyph, 1, 1), "1s1", "grg", "bob", 'o', transcendentBloodOrbStack, 'r', bloodRuneStack, 'g', etherealSlateStack, 'b', magicalesStack, '1', virtusStack, 's', soulShardStack);
 
         GameRegistry.addRecipe(dawnRitualDivinerStack, " d ", "srs", " d ", 'd', new ItemStack(ModItems.dawnScribeTool), 's', etherealSlateStack, 'r', duskRitualDivinerStack);
-        
+
         AlchemyRecipeRegistry.registerRecipe(new ItemStack(Items.flint, 2, 0), 1, new ItemStack[]{new ItemStack(Blocks.gravel), new ItemStack(Items.flint)}, 1);
         AlchemyRecipeRegistry.registerRecipe(new ItemStack(Blocks.grass), 2, new ItemStack[]{new ItemStack(Blocks.dirt), new ItemStack(Items.dye, 1, 15), new ItemStack(Items.wheat_seeds), new ItemStack(Items.wheat_seeds)}, 1);
         AlchemyRecipeRegistry.registerRecipe(new ItemStack(Items.leather, 3, 0), 2, new ItemStack[]{new ItemStack(Items.rotten_flesh), new ItemStack(Items.rotten_flesh), new ItemStack(Items.rotten_flesh), waterBucketStack, new ItemStack(Items.flint)}, 1);
@@ -1197,7 +1013,7 @@ public class AlchemicalWizardry
         AlchemyRecipeRegistry.registerRecipe(new ItemStack(Items.ghast_tear, 2), 100, new ItemStack[]{ghastTearStack, concentratedCatalystStack, weakBloodShardStack, new ItemStack(Blocks.soul_sand), new ItemStack(Blocks.soul_sand)}, 5);
         AlchemyRecipeRegistry.registerRecipe(new ItemStack(Items.coal, 5), 1, new ItemStack[]{new ItemStack(Items.coal, 1, 1), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.coal, 1, 1)}, 1);
         AlchemyRecipeRegistry.registerRecipe(new ItemStack(Items.clay_ball, 4), 5, new ItemStack[]{new ItemStack(Blocks.sand), waterBucketStack}, 2);
-        
+
         ItemIncense.registerIncenseRecipes();
         GameRegistry.addRecipe(new ItemStack(ModBlocks.blockCrucible), "i i", "sis", " S ", 's', new ItemStack(Blocks.stone_slab), 'i', ironIngotStack, 'S', stoneStack);
     }
@@ -1267,14 +1083,14 @@ public class AlchemicalWizardry
         {
             isThaumcraftLoaded = false;
         }
-        
+
         if(Loader.isModLoaded("guideapi"))
         {
         	long initialTime = System.nanoTime();
         	RecipeHolder.init();
         	long finalTime = System.nanoTime();
         	AlchemicalWizardry.logger.info("Recipe Holder initialized: took " + (finalTime - initialTime)/1000000f + "ms.");
-        	
+
             ModItems.itemMailCatalogue = new ItemMailOrderCatalogue().setUnlocalizedName("itemMailCatalogue");
             GameRegistry.registerItem(ModItems.itemMailCatalogue, "itemMailCatalogue");
             GameRegistry.addShapelessRecipe(new ItemStack(ModItems.itemMailCatalogue), new ItemStack(Items.book), new ItemStack(Items.dye, 1, 0), new ItemStack(Items.feather), new ItemStack(Blocks.glass, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Blocks.glass, 1, OreDictionary.WILDCARD_VALUE));
@@ -1287,9 +1103,9 @@ public class AlchemicalWizardry
             isForestryLoaded = true;
 
         	ModItems.itemBloodFrame = new ItemBloodFrame().setUnlocalizedName("bloodFrame");
-        	
+
         	ItemStack provenFrame = GameRegistry.findItemStack("Forestry", "frameImpregnated", 1);
-        	
+
         	if(provenFrame !=null)
         	{
         		AltarRecipeRegistry.registerAltarRecipe(new ItemStack(ModItems.itemBloodFrame), provenFrame, 3, 30000, 20, 20, false);
@@ -1304,19 +1120,19 @@ public class AlchemicalWizardry
             PamHarvestCompatRegistry.registerPamHandlers();
             AlchemicalWizardry.logger.info("Loaded Harvestcraft Handlers!");
         }
-        
-        if(Loader.isModLoaded("MineTweaker3")) 
+
+        if(Loader.isModLoaded("MineTweaker3"))
         {
             MineTweakerIntegration.register();
             AlchemicalWizardry.logger.info("Loaded MineTweaker 3 Integration");
         }
-        
+
         if(Loader.isModLoaded("AgriCraft"))
         {
         	HarvestRegistry.registerHarvestHandler(new AgriCraftCropHarvestHandler());
         	AlchemicalWizardry.logger.info("Loaded AgriCraft Handlers!");
         }
-        
+
         isBotaniaLoaded = Loader.isModLoaded("Botania");
         isPneumaticCraftLoaded = Loader.isModLoaded("PneumaticCraft");
         isFMPLoaded = Loader.isModLoaded("ForgeMultipart");
@@ -1324,18 +1140,18 @@ public class AlchemicalWizardry
 
         BloodMagicConfiguration.loadBlacklist();
 	    BloodMagicConfiguration.blacklistRituals();
-	    
+
 	    DemonVillageLootRegistry.init();
-	    
+
         this.initCompressionHandlers();
 
-	    
+
 //	    if(parseTextFiles)
 //	    	this.parseTextFile();
-	    
+
 //	    this.createItemTextureFiles();
     }
-    
+
     @Optional.Method(modid = "guideapi")
     public static void registerBMBook()
     {
@@ -1418,79 +1234,79 @@ public class AlchemicalWizardry
     {
     	if(!AlchemicalWizardry.potionDisableRegen)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.ghast_tear), Potion.regeneration.id, 450);
-    	
+
     	if(!AlchemicalWizardry.potionDisableNightVision)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.golden_carrot), Potion.nightVision.id, 2 * 60 * 20);
-        
+
     	if(!AlchemicalWizardry.potionDisableFireResistance)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.magma_cream), Potion.fireResistance.id, 2 * 60 * 20);
-        
+
     	if(!AlchemicalWizardry.potionDisableWaterBreathing)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.water_bucket), Potion.waterBreathing.id, 2 * 60 * 20);
-        
+
     	if(!AlchemicalWizardry.potionDisableMoveSpeed)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.sugar), Potion.moveSpeed.id, 2 * 60 * 20);
-        
+
     	if(!AlchemicalWizardry.potionDisableInstantHealth)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.speckled_melon), Potion.heal.id, 2 * 60 * 20);
-        
+
     	if(!AlchemicalWizardry.potionDisablePoison)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.spider_eye), Potion.poison.id, 450);
-        
+
     	if(!AlchemicalWizardry.potionDisableBlindness)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.dye, 1, 0), Potion.blindness.id, 450);
-        
+
     	if(!AlchemicalWizardry.potionDisableWeakness)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.fermented_spider_eye), Potion.weakness.id, 450);
-        
+
     	if(!AlchemicalWizardry.potionDisableStrength)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.blaze_powder), Potion.damageBoost.id, 2 * 60 * 20);
-        
+
     	if(!AlchemicalWizardry.potionDisableJumpBoost)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(ModItems.aether), Potion.jump.id, 2 * 60 * 20);
-        
+
     	if(!AlchemicalWizardry.potionDisableSlowness)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.clay_ball), Potion.moveSlowdown.id, 450);
-        
+
     	if(!AlchemicalWizardry.potionDisableMining)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.redstone), Potion.digSpeed.id, 2 * 60 * 20);
-        
+
     	if(!AlchemicalWizardry.potionDisableDrowning)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.potionitem, 1, 0), AlchemicalWizardry.customPotionDrowning.id, 450);
-        
+
     	if(!AlchemicalWizardry.potionDisableInvisibility)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.glass_bottle), Potion.invisibility.id, 2 * 60 * 20);
-        
+
     	if(!AlchemicalWizardry.potionDisableResistance)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.diamond), Potion.resistance.id, 2 * 60 * 20);
-        
+
     	if(!AlchemicalWizardry.potionDisableSaturation)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.poisonous_potato), Potion.field_76443_y.id, 2); //saturation
-        
+
     	if(!AlchemicalWizardry.potionDisableHealthBoost)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(ModItems.demonBloodShard), Potion.field_76434_w.id, 4 * 60 * 20); //health boost
-        
+
     	if(!AlchemicalWizardry.potionDisableAbsorption)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(ModItems.weakBloodShard), Potion.field_76444_x.id, 4 * 60 * 20); //Absorption
-        
+
     	if(!AlchemicalWizardry.potionDisableBoost)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(ModItems.terrae), AlchemicalWizardry.customPotionBoost.id, 60 * 20);
-        
+
     	if(!AlchemicalWizardry.potionDisableFlight)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.feather), AlchemicalWizardry.customPotionFlight.id, 60 * 20); // 1 *
-        
+
     	if(!AlchemicalWizardry.potionDisableReciprocation)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.arrow), AlchemicalWizardry.customPotionReciprocation.id, 60 * 20); // 1 *
-        
+
     	if(!AlchemicalWizardry.potionDisablePlanarBinding)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.ender_pearl), AlchemicalWizardry.customPotionPlanarBinding.id, 60 * 20); // 1 *
-        
+
     	if(!AlchemicalWizardry.potionDisableSoulFray)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Blocks.soul_sand), AlchemicalWizardry.customPotionSoulFray.id, 60 * 20);
-        
+
     	if(!AlchemicalWizardry.potionDisableSoulHarden)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(ModItems.baseItems, 1, 16), AlchemicalWizardry.customPotionSoulHarden.id, 60 * 20);
-        
+
     	if(!AlchemicalWizardry.potionDisableDeafness)
     		AlchemicalPotionCreationHandler.addPotion(new ItemStack(Items.slime_ball), AlchemicalWizardry.customPotionDeaf.id, 60 * 20);
     }
@@ -1567,11 +1383,11 @@ public class AlchemicalWizardry
         Rituals.registerRitual("AW031Convocation",isDemonRitualCreativeOnly ? 10 : 2, AlchemicalWizardry.ritualCostConvocation[0], new RitualEffectDemonPortal(), "Convocation of the Damned", new AlchemyCircleRenderer(new ResourceLocation("alchemicalwizardry:textures/models/TransCircleDemon.png"), 220, 22, 22, 255, 0, 0.501, 0.501, 0, 5, false));
         Rituals.registerRitual("AW032Symmetry", 2, AlchemicalWizardry.ritualCostSymmetry[0], new RitualEffectOmegaTest(), "Symmetry of the Omega");
         Rituals.registerRitual("AW033Stalling", 2, AlchemicalWizardry.ritualCostStalling[0], new RitualEffectOmegaStalling(), "Duet of the Fused Souls");
-        
+
         Rituals.registerRitual("AW034Crafting", 1, AlchemicalWizardry.ritualCostCrafting[0], new RitualEffectCrafting(), "Rhythm of the Beating Anvil");
-        
+
         Rituals.registerRitual("AW035PhantomHands", 1, AlchemicalWizardry.ritualCostPhantomHands[0], new RitualEffectItemRouting(), "Orchestra of the Phantom Hands");
-        
+
         Rituals.registerRitual("AW036SphereIsland", 2, AlchemicalWizardry.ritualCostSphereIsland[0], new RitualEffectSphereCreator(), "Blood of the New Moon");
         //Rituals.registerRitual(1,100,new RitualEffectApiaryOverclock(),"Apiary Overclock"));
     }
@@ -1599,7 +1415,7 @@ public class AlchemicalWizardry
     {
         CombinedPotionRegistry.registerCombinedPotionRecipe(customPotionFlameCloak, Potion.moveSpeed, Potion.regeneration);
     }
-    
+
     public static void initReagentRegistries()
     {
         ReagentRegistry.registerItemAndReagent(new ItemStack(ModItems.sanctus), new ReagentStack(ReagentRegistry.sanctusReagent, 1000));
@@ -1617,24 +1433,24 @@ public class AlchemicalWizardry
         ReagentRegistry.registerItemAndReagent(new ItemStack(ModItems.baseAlchemyItems, 1, 6), new ReagentStack(ReagentRegistry.virtusReagent, 1000));
         ReagentRegistry.registerItemAndReagent(new ItemStack(ModItems.baseAlchemyItems, 1, 7), new ReagentStack(ReagentRegistry.reductusReagent, 1000));
         ReagentRegistry.registerItemAndReagent(new ItemStack(ModItems.baseAlchemyItems, 1, 8), new ReagentStack(ReagentRegistry.potentiaReagent, 1000));
-        
+
         OmegaRegistry.registerParadigm(ReagentRegistry.aquasalusReagent, new OmegaParadigmWater((OmegaArmour)ModItems.boundHelmetWater, (OmegaArmour)ModItems.boundPlateWater, (OmegaArmour)ModItems.boundLeggingsWater, (OmegaArmour)ModItems.boundBootsWater));
         OmegaRegistry.registerParadigm(ReagentRegistry.terraeReagent, new OmegaParadigmEarth((OmegaArmour)ModItems.boundHelmetEarth, (OmegaArmour)ModItems.boundPlateEarth, (OmegaArmour)ModItems.boundLeggingsEarth, (OmegaArmour)ModItems.boundBootsEarth));
         OmegaRegistry.registerParadigm(ReagentRegistry.aetherReagent, new OmegaParadigmWind((OmegaArmour)ModItems.boundHelmetWind, (OmegaArmour)ModItems.boundPlateWind, (OmegaArmour)ModItems.boundLeggingsWind, (OmegaArmour)ModItems.boundBootsWind));
         OmegaRegistry.registerParadigm(ReagentRegistry.incendiumReagent, new OmegaParadigmFire((OmegaArmour)ModItems.boundHelmetFire, (OmegaArmour)ModItems.boundPlateFire, (OmegaArmour)ModItems.boundLeggingsFire, (OmegaArmour)ModItems.boundBootsFire));
 
     }
-    
+
     public static void initDemonPacketRegistiry()
     {
     	DemonPacketRegistry.registerDemonPacket("angel", new DemonPacketMinorGrunt());
     }
-    
+
     public static void initiateRegistry()
     {
     	SpellEffectRegistry.initiateRegistry();
-    	
-		
+
+
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmProjectile.class, new CSEProjectileDefaultFire());
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmProjectile.class, new CSEProjectileOffensiveFire());
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmProjectile.class, new CSEProjectileDefensiveFire());
@@ -1651,7 +1467,7 @@ public class AlchemicalWizardry
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmTool.class, new CSEToolOffensiveFire());
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmTool.class, new CSEToolDefensiveFire());
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmTool.class, new CSEToolEnvironmentalFire());
-		
+
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmProjectile.class, new CSEProjectileDefaultIce());
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmProjectile.class, new CSEProjectileOffensiveIce());
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmProjectile.class, new CSEProjectileDefensiveIce());
@@ -1685,7 +1501,7 @@ public class AlchemicalWizardry
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmTool.class, new CSEToolOffensiveWind());
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmTool.class, new CSEToolDefensiveWind());
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmTool.class, new CSEToolEnvironmentalWind());
-		
+
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmProjectile.class, new CSEProjectileDefaultEarth());
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmProjectile.class, new CSEProjectileOffensiveEarth());
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmProjectile.class, new CSEProjectileDefensiveEarth());
@@ -1703,21 +1519,21 @@ public class AlchemicalWizardry
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmTool.class, new CSEToolDefensiveEarth());
 		SpellEffectRegistry.registerSpellEffect(SpellParadigmTool.class, new CSEToolEnvironmentalEarth());
     }
-    
+
     public void initCompressionHandlers()
     {
     	StorageBlockCraftingManager.getInstance().addStorageBlockRecipes();
     	CompressionRegistry.registerHandler(new BaseCompressionHandler(new ItemStack(Items.glowstone_dust, 4, 0), new ItemStack(Blocks.glowstone), 64));
     	CompressionRegistry.registerHandler(new BaseCompressionHandler(new ItemStack(Items.snowball, 4, 0), new ItemStack(Blocks.snow), 8));
     	CompressionRegistry.registerHandler(new AdvancedCompressionHandler());
-    	
+
     	CompressionRegistry.registerItemThreshold(new ItemStack(Blocks.cobblestone), 64);
     }
-    
+
 //    public void createItemTextureFiles()
 //    {
 //    	File textFiles = new File("config/BloodMagic/itemJsonFiles");
-//    	
+//
 //    	File bmDirectory = new File("src/main/resources/assets/alchemicalwizardryJsonFiles");
 //        if(!bmDirectory.exists())
 //        {
@@ -1725,9 +1541,9 @@ public class AlchemicalWizardry
 //        }
 //
 //        String[] itemStrings = new String[]{"apple", "apple"};
-//        
+//
 //        String prefix = "alchemicalwizardry:items/";
-//        
+//
 //        try
 //        {
 //        	for(int i=0; i<itemStrings.length; i+=2)
@@ -1745,22 +1561,22 @@ public class AlchemicalWizardry
 //            			writer.close();
 //                    }
 //        		}
-//        		
+//
 //        	}
-//        	
+//
 //        } catch (FileNotFoundException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-//        
-//        
-//    	
+//
+//
+//
 //    }
-    
+
     public String[] getGeneratedStrings(String itemName)
     {
     	String[] strings = new String[18];
-    	
+
     	strings[0] = "{";
     	strings[1] = "    \"parent\": \"builtin/generated\",";
     	strings[2] = "    \"textures\": {";
@@ -1779,10 +1595,10 @@ public class AlchemicalWizardry
     	strings[15] = "        }";
     	strings[16] = "    }";
     	strings[17] = "}";
-    	
+
     	return strings;
     }
-    
+
 //    @SideOnly(Side.CLIENT)
 //    public void parseTextFile()
 //    {
@@ -1791,37 +1607,37 @@ public class AlchemicalWizardry
 //    	{
 //    		try {
 //    			System.out.println("I am in an island of files!");
-//    			
+//
 //                InputStream input = AlchemicalWizardry.class.getResourceAsStream("/assets/alchemicalwizardryBooks/books/book.txt");
 //
 //        		Minecraft.getMinecraft().fontRenderer.setUnicodeFlag(true);
-//                
+//
 //                if(input != null)
 //                {
 //                	DataInputStream in = new DataInputStream(input);
 //                	BufferedReader br = new BufferedReader(new InputStreamReader(in));
 //        			String strLine;
 //        			//Read File Line By Line
-//        			
+//
 //        			int defMaxLines = 16;
 //        			int maxLines = defMaxLines;
-//        			
+//
 //        			int currentPage = 0;
-//        			
+//
 //        			int pageIndex = 1;
-//        			
+//
 //        			String currentTitle = "aw.entry.Magnus";
-//        			
+//
 //        			String[] strings = new String[1];
 //        			strings[0] = "";
-//        			
-//        			while ((strLine = br.readLine()) != null)   
+//
+//        			while ((strLine = br.readLine()) != null)
 //        			{
 //        				if(strLine.trim().isEmpty())
 //        				{
 //        					continue;
 //        				}
-//        				
+//
 //        				if(strLine.startsWith("//TITLE ")) //New entry~
 //        				{
 //        					String[] newStrings = new String[currentPage + 1 + 1]; //Just to show that it is increasing
@@ -1829,17 +1645,17 @@ public class AlchemicalWizardry
 //    						{
 //    							newStrings[i] = strings[i];
 //    						}
-//    						
+//
 //    						currentPage++;
 //    						newStrings[currentPage - 1] = currentTitle + "." + pageIndex + "=" + newStrings[currentPage - 1];
 //    						newStrings[currentPage] = "";
 //    						strings = newStrings;
-//    						
+//
 //    						pageIndex = 1;
-//    						
+//
 //    						String title = strLine.replaceFirst("//TITLE ", " ").trim();
 //    						currentTitle = "aw.entry." + title;
-//    						
+//
 //        					continue;
 //        				}else if(strLine.startsWith("//SPECIAL "))
 //        				{
@@ -1858,18 +1674,18 @@ public class AlchemicalWizardry
 //        						{
 //        							newStrings[i] = strings[i];
 //        						}
-//        						
+//
 //        						currentPage++;
 //        						newStrings[currentPage - 1] = currentTitle + "." + pageIndex + "=" + newStrings[currentPage - 1];
 //        						newStrings[currentPage] = "";
 //        						strings = newStrings;
 //        					}
-//        					
+//
 //        					continue;
 //        				}
-//        				
+//
 //        				strLine = strLine.replace('', '"').replace('','"').replace("", "...").replace('', '\'').replace('', '-');
-//        				
+//
 //        				if(Minecraft.getMinecraft() != null && Minecraft.getMinecraft().fontRenderer != null)
 //        				{
 //        					List list = Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(strLine, 110);
@@ -1878,7 +1694,7 @@ public class AlchemicalWizardry
 //                				System.out.println("Number of lines: " + list.size());
 //            				}
 //        				}
-//	        				
+//
 //        				String[] cutStrings = strLine.split(" ");
 //
 //        				for(String word : cutStrings)
@@ -1899,24 +1715,24 @@ public class AlchemicalWizardry
 //        						{
 //        							newStrings[i] = strings[i];
 //        						}
-//        						
+//
 //        						currentPage++;
 //
 //        						newStrings[currentPage - 1] = currentTitle + "." + pageIndex + "=" + newStrings[currentPage - 1];
 //        						newStrings[currentPage] = word;
 //        						strings = newStrings;
-//        						
+//
 //        						pageIndex++;
-//        						
+//
 //        						maxLines = defMaxLines;
-//        						
+//
 //        						changePage = false;
 //        					}else
 //        					{
 //        						strings[currentPage] = strings[currentPage] + " " + word;
 //        					}
 //        				}
-//        				
+//
 //        				int currentLines = Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(strings[currentPage], 110).size();
 //        				while(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(strings[currentPage] + " ", 110).size() <= currentLines)
 //        				{
@@ -1924,12 +1740,12 @@ public class AlchemicalWizardry
 //            					strings[currentPage] = strings[currentPage] + " ";
 //        					}
 //        				}
-//        				
+//
 //    					System.out.println("" + strLine);
 //    				}
-//        			
+//
 //        			strings[currentPage] = currentTitle + "." + pageIndex + "=" + strings[currentPage];
-//        			
+//
 //        	        File bmDirectory = new File("src/main/resources/assets/alchemicalwizardryBooks");
 //        	        if(!bmDirectory.exists())
 //        	        {
@@ -1939,7 +1755,7 @@ public class AlchemicalWizardry
 //        	        File file = new File(bmDirectory, "books.txt");
 ////                    if (file.exists() && file.length() > 3L)
 ////                    {
-////                        
+////
 ////                    }else
 //                    {
 //                    	PrintWriter writer = new PrintWriter(file);
@@ -1949,10 +1765,10 @@ public class AlchemicalWizardry
 //            			}
 //            			writer.close();
 //                    }
-//        			
-////        			
+//
+////
 //                }
-//                
+//
 //        		Minecraft.getMinecraft().fontRenderer.setUnicodeFlag(false);
 //
 //			} catch (FileNotFoundException e) {
@@ -1964,7 +1780,7 @@ public class AlchemicalWizardry
 //			}
 //    	}
 //    }
-    
+
     @Mod.EventHandler
     public void initCommands(FMLServerStartingEvent event)
     {
