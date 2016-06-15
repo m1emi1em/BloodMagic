@@ -449,7 +449,7 @@ public class AlchemicalWizardry
                 System.err.println(e);
             }
         }
-        AlchemicalWizardry.lifeEssenceFluid = new LifeEssence("Life Essence");
+        AlchemicalWizardry.lifeEssenceFluid = new LifeEssence("LifeEssence");
         FluidRegistry.registerFluid(lifeEssenceFluid);
 
         ModBlocks.init();
