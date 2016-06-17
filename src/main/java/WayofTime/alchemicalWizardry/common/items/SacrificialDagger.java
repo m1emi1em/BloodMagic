@@ -58,7 +58,7 @@ public class SacrificialDagger extends Item
             par3List.add(StatCollector.translateToLocal("tooltip.sacrificialdagger.desc3"));
         }
     }
-    
+
     /**
      * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
      */
@@ -72,13 +72,13 @@ public class SacrificialDagger extends Item
 
         PlayerSacrificeHandler.sacrificePlayerHealth(player);
     }
-    
+
     @Override
     public int getMaxItemUseDuration(ItemStack stack)
     {
         return 72000;
     }
-    
+
     /**
      * returns the action that specifies what animation to play when the items is being used
      */
@@ -96,7 +96,7 @@ public class SacrificialDagger extends Item
             player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
             return stack;
         }
-    	
+
         if (!player.capabilities.isCreativeMode)
         {
         	SacrificeKnifeUsedEvent evt = new SacrificeKnifeUsedEvent(player, true, true, 2);
@@ -104,12 +104,12 @@ public class SacrificialDagger extends Item
         	{
         		return stack;
         	}
-        	
+
         	if(evt.shouldDrainHealth)
         	{
                 player.setHealth(player.getHealth() - 2);
         	}
-        	
+
         	if(!evt.shouldFillAltar)
         	{
         		return stack;
@@ -142,10 +142,10 @@ public class SacrificialDagger extends Item
 
         if (player.isPotionActive(AlchemicalWizardry.customPotionSoulFray))
         {
-            findAndFillAltar(world, player, 20);
+            findAndFillAltar(world, player, AlchemicalWizardry.lpPerSelfSacrificeSoulFray);
         } else
         {
-            findAndFillAltar(world, player, 200);
+            findAndFillAltar(world, player, AlchemicalWizardry.lpPerSelfSacrifice);
         }
 
         if (player.getHealth() <= 0.001f)
@@ -183,7 +183,7 @@ public class SacrificialDagger extends Item
                 for (int k = -2; k <= 1; k++)
                 {
                     tileEntity = world.getTileEntity(i + x, k + y, j + z);
-                    
+
                     if(tileEntity instanceof IBloodAltar)
                     {
                     	return (IBloodAltar)tileEntity;
@@ -194,7 +194,7 @@ public class SacrificialDagger extends Item
 
         return null;
     }
-    
+
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int par4, boolean par5)
     {
@@ -203,7 +203,7 @@ public class SacrificialDagger extends Item
     		this.setUseForSacrifice(stack, this.isPlayerPreparedForSacrifice(world, (EntityPlayer)entity));
     	}
     }
-    
+
     @Override
     public String getItemStackDisplayName(ItemStack stack)
     {
@@ -213,19 +213,19 @@ public class SacrificialDagger extends Item
         }
         return super.getItemStackDisplayName(stack);
     }
-    
+
     public boolean isPlayerPreparedForSacrifice(World world, EntityPlayer player)
     {
     	return !world.isRemote && (PlayerSacrificeHandler.getPlayerIncense(player) > 0);
     }
-    
+
     public boolean canUseForSacrifice(ItemStack stack)
     {
     	NBTTagCompound tag = stack.getTagCompound();
-    	
+
     	return tag != null && tag.getBoolean("sacrifice");
     }
-    
+
     public void setUseForSacrifice(ItemStack stack, boolean sacrifice)
     {
     	NBTTagCompound tag = stack.getTagCompound();
@@ -234,10 +234,10 @@ public class SacrificialDagger extends Item
     		tag = new NBTTagCompound();
     		stack.setTagCompound(tag);
     	}
-    	
+
     	tag.setBoolean("sacrifice", sacrifice);
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack stack, int pass)

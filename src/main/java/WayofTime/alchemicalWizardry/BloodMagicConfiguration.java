@@ -3,6 +3,7 @@ package WayofTime.alchemicalWizardry;
 import java.io.File;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -21,10 +22,16 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.oredict.OreDictionary;
+
+import static net.minecraft.entity.EntityList.stringToClassMapping;
 
 /**
  * Created with IntelliJ IDEA.
@@ -275,6 +282,13 @@ public class BloodMagicConfiguration
 		AlchemicalWizardry.ritualWeakCostThunderstorm = config.get(lpCosts, "[Weak Ritual] Thunderstorm", 5000).getInt();
 		AlchemicalWizardry.ritualWeakCostZombie = config.get(lpCosts, "[Weak Ritual] Zombie", 5000).getInt();
 
+		AlchemicalWizardry.lpPerSelfSacrifice = config.get("sacrifice", "LP per self-sacrifice", AlchemicalWizardry.lpPerSelfSacrifice).getInt(AlchemicalWizardry.lpPerSelfSacrifice);
+		AlchemicalWizardry.lpPerSelfSacrificeSoulFray = config.get("sacrifice", "LP per self-sacrifice (when Soul Fray potion is active)", AlchemicalWizardry.lpPerSelfSacrificeSoulFray).getInt(AlchemicalWizardry.lpPerSelfSacrificeSoulFray);
+		AlchemicalWizardry.lpPerSelfSacrificeFeatheredKnife = config.get("sacrifice", "LP per self-sacrifice with Ritual of Feathered Knife", AlchemicalWizardry.lpPerSelfSacrificeFeatheredKnife).getInt(AlchemicalWizardry.lpPerSelfSacrificeFeatheredKnife);
+		AlchemicalWizardry.lpPerSacrificeBase = config.get("sacrifice", "LP per sacrifice", AlchemicalWizardry.lpPerSacrificeBase).getInt(AlchemicalWizardry.lpPerSacrificeBase);
+		AlchemicalWizardry.lpPerSacrificeWellOfSuffering = config.get("sacrifice", "LP per sacrifice with Well of Suffering ritual", AlchemicalWizardry.lpPerSacrificeWellOfSuffering).getInt(AlchemicalWizardry.lpPerSacrificeWellOfSuffering);
+		AlchemicalWizardry.lpPerSacrificeIncense = config.get("sacrifice", "LP per (self-)sacrifice with incense", AlchemicalWizardry.lpPerSacrificeIncense).getDouble(AlchemicalWizardry.lpPerSacrificeIncense);
+
 		Side side = FMLCommonHandler.instance().getSide();
 		if (side == Side.CLIENT)
 		{
@@ -361,6 +375,39 @@ public class BloodMagicConfiguration
 		});
 		config.save();
 	}
+	public static void loadCustomLPValues()
+	{
+		AlchemicalWizardry.lpPerSactificeCustom = new HashMap<Class<?>, Integer>();
+		for (Object object : EntityList.stringToClassMapping.entrySet())
+		{
+			Entry entry = (Entry)object;
+			String entityName = (String) entry.getKey();
+			Class entityClass = (Class) entry.getValue();
+			if (EntityLivingBase.class.isAssignableFrom(entityClass) && !Modifier.isAbstract(entityClass.getModifiers()))
+			{
+				int lpAmount = 500;
+				if (EntityVillager.class.isAssignableFrom(entityClass))
+				{
+					lpAmount = 2000;
+				}
+				if (EntitySlime.class.isAssignableFrom(entityClass))
+				{
+					lpAmount = 150;
+				}
+				if (EntityEnderman.class.isAssignableFrom(entityClass))
+				{
+					lpAmount = 200;
+				}
+				if (EntityAnimal.class.isAssignableFrom(entityClass))
+				{
+					lpAmount = 250;
+				}
+				lpAmount = config.get("sacrifice.custom values", entityName, lpAmount).getInt(lpAmount);
+				AlchemicalWizardry.lpPerSactificeCustom.put(entityClass, lpAmount);
+			}
+		}
+		config.save();
+	}
 
 	public static void set(String categoryName, String propertyName, String newValue)
 	{
@@ -378,7 +425,7 @@ public class BloodMagicConfiguration
 	public static void loadBlacklist()
 	{
 		AlchemicalWizardry.wellBlacklist = new ArrayList<Class>();
-		for (Object o : EntityList.stringToClassMapping.entrySet())
+		for (Object o : stringToClassMapping.entrySet())
 		{
 			Entry entry = (Entry) o;
 			Class curClass = (Class) entry.getValue();

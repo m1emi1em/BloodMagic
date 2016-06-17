@@ -1,5 +1,8 @@
 package WayofTime.alchemicalWizardry.common.rituals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import WayofTime.alchemicalWizardry.AlchemicalWizardry;
 import WayofTime.alchemicalWizardry.api.alchemy.energy.ReagentRegistry;
 import WayofTime.alchemicalWizardry.api.rituals.IMasterRitualStone;
@@ -13,14 +16,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class RitualEffectWellOfSuffering extends RitualEffect
 {
     public static final int timeDelay = 25;
-    public static final int amount = 10;
-    
+    public static final int amount = AlchemicalWizardry.lpPerSacrificeWellOfSuffering;
+
     private static final int tennebraeDrain = 5;
     private static final int potentiaDrain = 10;
     private static final int offensaDrain = 3;
@@ -63,7 +63,7 @@ public class RitualEffectWellOfSuffering extends RitualEffect
         {
             return;
         }
-        
+
         boolean hasPotentia = this.canDrainReagent(ritualStone, ReagentRegistry.potentiaReagent, potentiaDrain, false);
 
         int d0 = 10;
@@ -88,19 +88,19 @@ public class RitualEffectWellOfSuffering extends RitualEffect
                 }
 
                 hasOffensa = hasOffensa && this.canDrainReagent(ritualStone, ReagentRegistry.offensaReagent, offensaDrain, true);
-                
+
                 if (livingEntity.attackEntityFrom(DamageSource.outOfWorld, hasOffensa ? 2 : 1))
                 {
                 	hasTennebrae = hasTennebrae && this.canDrainReagent(ritualStone, ReagentRegistry.tenebraeReagent, tennebraeDrain, true);
-                	
-                	
+
+
                     entityCount++;
                     tileAltar.sacrificialDaggerCall(this.amount * (hasTennebrae ? 2 : 1) * (hasOffensa ? 2 : 1), true);
                 }
             }
 
             SoulNetworkHandler.syphonFromNetwork(owner, this.getCostPerRefresh() * entityCount);
-            
+
             if(hasPotentia)
             {
             	this.canDrainReagent(ritualStone, ReagentRegistry.potentiaReagent, potentiaDrain, true);

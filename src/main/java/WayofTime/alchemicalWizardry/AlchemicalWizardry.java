@@ -7,6 +7,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -306,6 +307,14 @@ public class AlchemicalWizardry
     public static BlockStack[] fifthTierRunes = new BlockStack[10];
     public static BlockStack[] sixthTierRunes = new BlockStack[10];
     public static BlockStack[] specialAltarBlock = new BlockStack[7];
+
+    public static int lpPerSelfSacrifice = 200;
+    public static int lpPerSelfSacrificeSoulFray = 20;
+    public static int lpPerSelfSacrificeFeatheredKnife = 100;
+    public static int lpPerSacrificeBase = 500;
+    public static int lpPerSacrificeWellOfSuffering = 10;
+    public static double lpPerSacrificeIncense = 100.0D;
+    public static HashMap<Class<?>, Integer> lpPerSactificeCustom;
 
     public static List<Class> wellBlacklist;
 
@@ -1140,6 +1149,7 @@ public class AlchemicalWizardry
 
         BloodMagicConfiguration.loadBlacklist();
 	    BloodMagicConfiguration.blacklistRituals();
+        BloodMagicConfiguration.loadCustomLPValues();
 
 	    DemonVillageLootRegistry.init();
 
