@@ -1,22 +1,22 @@
 package WayofTime.alchemicalWizardry.common.rituals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import WayofTime.alchemicalWizardry.AlchemicalWizardry;
 import WayofTime.alchemicalWizardry.api.alchemy.energy.ReagentRegistry;
 import WayofTime.alchemicalWizardry.api.rituals.IMasterRitualStone;
 import WayofTime.alchemicalWizardry.api.rituals.RitualComponent;
 import WayofTime.alchemicalWizardry.api.rituals.RitualEffect;
 import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
 import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
+import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class RitualEffectFeatheredKnife extends RitualEffect
 {
-    public final int amount = 100;
+    public final int amount = AlchemicalWizardry.lpPerSelfSacrificeFeatheredKnife;
 
     public static final int sanctusDrain = 5;
     public static final int reductusDrain = 3;

@@ -2,6 +2,14 @@ package WayofTime.alchemicalWizardry.common.items;
 
 import java.util.List;
 
+import WayofTime.alchemicalWizardry.AlchemicalWizardry;
+import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
+import WayofTime.alchemicalWizardry.common.IDemon;
+import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.IHoardDemon;
+import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
+import com.google.common.collect.Multimap;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -9,10 +17,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.boss.IBossDisplayData;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -20,16 +24,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import WayofTime.alchemicalWizardry.AlchemicalWizardry;
-import WayofTime.alchemicalWizardry.common.IDemon;
-import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.IHoardDemon;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
-import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
-
-import com.google.common.collect.Multimap;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class DaggerOfSacrifice extends EnergyItems
 {
@@ -57,7 +51,7 @@ public class DaggerOfSacrifice extends EnergyItems
         {
             return false;
         }
-        
+
         if(par2EntityLivingBase instanceof IHoardDemon)
         {
         	return false;
@@ -81,11 +75,9 @@ public class DaggerOfSacrifice extends EnergyItems
         	this.findAndNotifyAltarOfDemon(world, par2EntityLivingBase);
         }
 
-        int lifeEssence = 500;
-        if (par2EntityLivingBase instanceof EntityVillager) lifeEssence = 2000;
-        else if (par2EntityLivingBase instanceof EntitySlime) lifeEssence = 150;
-        else if (par2EntityLivingBase instanceof EntityEnderman) lifeEssence = 200;
-        else if (par2EntityLivingBase instanceof EntityAnimal) lifeEssence = 250;
+        int lifeEssence = AlchemicalWizardry.lpPerSactificeCustom.containsKey(par2EntityLivingBase.getClass()) ?
+                          AlchemicalWizardry.lpPerSactificeCustom.get(par2EntityLivingBase.getClass()) :
+                          AlchemicalWizardry.lpPerSacrificeBase;
 
         if (findAndFillAltar(par2EntityLivingBase.worldObj, par2EntityLivingBase, lifeEssence))
         {
@@ -157,10 +149,10 @@ public class DaggerOfSacrifice extends EnergyItems
         }
 
         altarEntity.addToDemonBloodDuration(50);
-        
+
         return true;
     }
-    
+
     public boolean findAndFillAltar(World world, EntityLivingBase sacrifice, int amount)
     {
         int posX = (int) Math.round(sacrifice.posX - 0.5f);
