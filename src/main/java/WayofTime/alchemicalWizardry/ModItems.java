@@ -65,6 +65,7 @@ public class ModItems
     public static Item apprenticeBloodOrb;
     public static Item magicianBloodOrb;
     public static Item energyBlaster;
+    public static Item energyBlasterSecondTier;
     public static Item energySword;
     public static Item lavaCrystal;
     public static Item waterSigil;
@@ -148,6 +149,7 @@ public class ModItems
     public static Item sigilOfMagnetism;
     public static Item itemKeyOfDiablo;
     public static Item energyBazooka;
+    public static Item energyBazookaSecondTier;
     public static Item itemBloodLightSigil;
     public static Item itemComplexSpellCrystal;
     public static Item itemBloodFrame;
@@ -163,42 +165,42 @@ public class ModItems
     public static Item itemAttunedCrystal;
     public static Item itemTankSegmenter;
     public static Item itemDestinationClearer;
-    
+
     public static Item itemHarvestSigil;
     public static Item itemCompressionSigil;
 
     public static Item bucketLife;
-    
+
     public static Item itemBloodPack;
-    
+
     public static Item transcendentBloodOrb;
     public static Item itemAssassinSigil;
-    
+
     public static Item boundHelmetWater;
     public static Item boundPlateWater;
     public static Item boundLeggingsWater;
     public static Item boundBootsWater;
-    
+
     public static Item boundHelmetEarth;
     public static Item boundPlateEarth;
     public static Item boundLeggingsEarth;
     public static Item boundBootsEarth;
-    
+
     public static Item boundHelmetWind;
     public static Item boundPlateWind;
     public static Item boundLeggingsWind;
     public static Item boundBootsWind;
-    
+
     public static Item boundHelmetFire;
     public static Item boundPlateFire;
     public static Item boundLeggingsFire;
     public static Item boundBootsFire;
-    
+
     public static Item inputRoutingFocus;
     public static Item outputRoutingFocus;
-    
+
     public static Item itemMailCatalogue;
-    
+
     public static Item itemIncense;
 
     public static Item ritualDismantler;
@@ -211,7 +213,8 @@ public class ModItems
         masterBloodOrb = new MasterBloodOrb(1000000).setUnlocalizedName("masterBloodOrb");
         archmageBloodOrb = new ArchmageBloodOrb(10000000).setUnlocalizedName("archmageBloodOrb");
         transcendentBloodOrb = new TranscendentBloodOrb(30000000).setUnlocalizedName("transcendentBloodOrb");
-        energyBlaster = new EnergyBlast().setUnlocalizedName("energyBlast");
+        energyBlaster = new EnergyBlast(1).setUnlocalizedName("energyBlast");
+        energyBlasterSecondTier = new EnergyBlast(2).setUnlocalizedName("energyBlastSecondTier");
         energySword = new EnergySword().setUnlocalizedName("energySword");
         lavaCrystal = new LavaCrystal().setUnlocalizedName("lavaCrystal");
         waterSigil = new SigilWater().setUnlocalizedName("waterSigil");
@@ -281,7 +284,8 @@ public class ModItems
         itemRitualDiviner = new ItemRitualDiviner().setUnlocalizedName("ritualDiviner");
         sigilOfMagnetism = new SigilOfMagnetism().setUnlocalizedName("sigilOfMagnetism");
         itemKeyOfDiablo = new ItemDiabloKey().setUnlocalizedName("itemDiabloKey");
-        energyBazooka = new EnergyBazooka().setUnlocalizedName("energyBazooka");
+        energyBazooka = new EnergyBazooka(1).setUnlocalizedName("energyBazooka");
+        energyBazookaSecondTier = new EnergyBazooka(2).setUnlocalizedName("energyBazookaSecondTier");
         itemBloodLightSigil = new SigilBloodLight().setUnlocalizedName("bloodLightSigil");
         itemComplexSpellCrystal = new ItemComplexSpellCrystal().setUnlocalizedName("itemComplexSpellCrystal");
         bucketLife = new LifeBucket(ModBlocks.blockLifeEssence).setUnlocalizedName("bucketLife").setContainerItem(Items.bucket).setCreativeTab(CreativeTabs.tabMisc);
@@ -292,44 +296,44 @@ public class ModItems
         itemFluidSigil = new SigilFluid().setUnlocalizedName("itemFluidSigil");
         itemSeerSigil = new SigilSeer().setUnlocalizedName("itemSeerSigil");
         customTool = new ItemSpellMultiTool().setUnlocalizedName("multiTool");
-        
+
         SpellParadigmTool.customTool = customTool;
-        
+
         itemCombinationalCatalyst = new CombinationalCatalyst().setUnlocalizedName("itemCombinationalCatalyst");
         itemAttunedCrystal = new ItemAttunedCrystal().setUnlocalizedName("itemAttunedCrystal");
         itemTankSegmenter = new ItemTankSegmenter().setUnlocalizedName("itemTankSegmenter");
         itemDestinationClearer = new ItemDestinationClearer().setUnlocalizedName("destinationClearer");
-        
+
         dawnScribeTool = new DawnScribeTool().setUnlocalizedName("dawnScribeTool");
-        
+
         itemBloodPack = new ItemBloodLetterPack().setUnlocalizedName("itemBloodPack");
         itemHarvestSigil = new SigilHarvest().setUnlocalizedName("itemHarvestSigil");
         itemCompressionSigil = new SigilPackRat().setUnlocalizedName("itemCompressionSigil");
         itemAssassinSigil = new SigilOfTheAssassin().setUnlocalizedName("itemAssassinSigil");
-        
+
         boundHelmetWater = new OmegaArmourWater(0).setUnlocalizedName("boundHelmetWater");
         boundPlateWater = new OmegaArmourWater(1).setUnlocalizedName("boundPlateWater");
         boundLeggingsWater = new OmegaArmourWater(2).setUnlocalizedName("boundLeggingsWater");
         boundBootsWater = new OmegaArmourWater(3).setUnlocalizedName("boundBootsWater");
-        
+
         boundHelmetEarth = new OmegaArmourEarth(0).setUnlocalizedName("boundHelmetEarth");
         boundPlateEarth = new OmegaArmourEarth(1).setUnlocalizedName("boundPlateEarth");
         boundLeggingsEarth = new OmegaArmourEarth(2).setUnlocalizedName("boundLeggingsEarth");
         boundBootsEarth = new OmegaArmourEarth(3).setUnlocalizedName("boundBootsEarth");
-        
+
         boundHelmetWind = new OmegaArmourWind(0).setUnlocalizedName("boundHelmetWind");
         boundPlateWind = new OmegaArmourWind(1).setUnlocalizedName("boundPlateWind");
         boundLeggingsWind = new OmegaArmourWind(2).setUnlocalizedName("boundLeggingsWind");
         boundBootsWind = new OmegaArmourWind(3).setUnlocalizedName("boundBootsWind");
-        
+
         boundHelmetFire = new OmegaArmourFire(0).setUnlocalizedName("boundHelmetFire");
         boundPlateFire = new OmegaArmourFire(1).setUnlocalizedName("boundPlateFire");
         boundLeggingsFire = new OmegaArmourFire(2).setUnlocalizedName("boundLeggingsFire");
         boundBootsFire = new OmegaArmourFire(3).setUnlocalizedName("boundBootsFire");
-        
+
         inputRoutingFocus = new InputRoutingFocus().setUnlocalizedName("inputRoutingFocus");
         outputRoutingFocus = new OutputRoutingFocus().setUnlocalizedName("outputRoutingFocus");
-                
+
         itemIncense = new ItemIncense().setUnlocalizedName("bloodMagicIncenseItem");
 
         ritualDismantler = new ItemRitualDismantler().setUnlocalizedName("ritualDismantler");
@@ -341,6 +345,7 @@ public class ModItems
         GameRegistry.registerItem(ModItems.apprenticeBloodOrb, "apprenticeBloodOrb");
         GameRegistry.registerItem(ModItems.magicianBloodOrb, "magicianBloodOrb");
         GameRegistry.registerItem(ModItems.energyBlaster, "energyBlaster");
+        GameRegistry.registerItem(ModItems.energyBlasterSecondTier, "energyBlasterSecondTier");
 
         GameRegistry.registerItem(ModItems.energySword, "energySword");
         GameRegistry.registerItem(ModItems.lavaCrystal, "lavaCrystal");
@@ -416,6 +421,7 @@ public class ModItems
         GameRegistry.registerItem(ModItems.sigilOfMagnetism, "sigilOfMagnetism");
         GameRegistry.registerItem(ModItems.itemKeyOfDiablo, "itemKeyOfDiablo");
         GameRegistry.registerItem(ModItems.energyBazooka, "energyBazooka");
+        GameRegistry.registerItem(ModItems.energyBazookaSecondTier, "energyBazookaSecondTier");
         GameRegistry.registerItem(ModItems.itemBloodLightSigil, "itemBloodLightSigil");
         GameRegistry.registerItem(ModItems.itemComplexSpellCrystal, "itemComplexSpellCrystal");
         GameRegistry.registerItem(ModItems.itemSigilOfSupression, "sigilOfSupression");
@@ -431,40 +437,40 @@ public class ModItems
         GameRegistry.registerItem(ModItems.itemAttunedCrystal, "itemAttunedCrystal");
         GameRegistry.registerItem(ModItems.itemTankSegmenter, "itemTankSegmenter");
         GameRegistry.registerItem(ModItems.itemDestinationClearer, "itemDestinationClearer");
-        
+
         GameRegistry.registerItem(ModItems.baseItems, "bloodMagicBaseItems");
         GameRegistry.registerItem(ModItems.baseAlchemyItems, "bloodMagicBaseAlchemyItems");
-        
+
         GameRegistry.registerItem(ModItems.dawnScribeTool, "dawnScribeTool");
-        
+
         GameRegistry.registerItem(ModItems.itemBloodPack, "itemBloodPack");
         GameRegistry.registerItem(ModItems.itemHarvestSigil, "itemHarvestSigil");
         GameRegistry.registerItem(ModItems.itemCompressionSigil, "itemCompressionSigil");
         GameRegistry.registerItem(ModItems.itemAssassinSigil, "itemAssassinSigil");
-        
+
         GameRegistry.registerItem(ModItems.boundHelmetWater, "boundHelmetWater");
         GameRegistry.registerItem(ModItems.boundPlateWater, "boundPlateWater");
         GameRegistry.registerItem(ModItems.boundLeggingsWater, "boundLeggingsWater");
         GameRegistry.registerItem(ModItems.boundBootsWater, "boundBootsWater");
-        
+
         GameRegistry.registerItem(ModItems.boundHelmetEarth, "boundHelmetEarth");
         GameRegistry.registerItem(ModItems.boundPlateEarth, "boundPlateEarth");
         GameRegistry.registerItem(ModItems.boundLeggingsEarth, "boundLeggingsEarth");
         GameRegistry.registerItem(ModItems.boundBootsEarth, "boundBootsEarth");
-        
+
         GameRegistry.registerItem(ModItems.boundHelmetWind, "boundHelmetWind");
         GameRegistry.registerItem(ModItems.boundPlateWind, "boundPlateWind");
         GameRegistry.registerItem(ModItems.boundLeggingsWind, "boundLeggingsWind");
         GameRegistry.registerItem(ModItems.boundBootsWind, "boundBootsWind");
-        
+
         GameRegistry.registerItem(ModItems.boundHelmetFire, "boundHelmetFire");
         GameRegistry.registerItem(ModItems.boundPlateFire, "boundPlateFire");
         GameRegistry.registerItem(ModItems.boundLeggingsFire, "boundLeggingsFire");
         GameRegistry.registerItem(ModItems.boundBootsFire, "boundBootsFire");
-        
+
         GameRegistry.registerItem(ModItems.inputRoutingFocus, "inputRoutingFocus");
         GameRegistry.registerItem(ModItems.outputRoutingFocus, "outputRoutingFocus");
-        
+
         GameRegistry.registerItem(ModItems.itemIncense, "bloodMagicIncenseItem");
         GameRegistry.registerItem(ModItems.ritualDismantler, "ritualDismantler");
     }

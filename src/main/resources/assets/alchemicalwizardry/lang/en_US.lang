@@ -76,6 +76,7 @@ item.magicianBloodOrb.name=Magician's Blood Orb
 item.masterBloodOrb.name=Master Blood Orb
 item.archmageBloodOrb.name=Archmage's Blood Orb
 item.energyBlast.name=Energy Blaster
+item.energyBlastSecondTier.name=Energy Blaster II
 item.energySword.name=Bound Blade
 item.lavaCrystal.name=Lava Crystal
 item.waterSigil.name=Water Sigil
@@ -147,6 +148,7 @@ item.ritualDismantler.name=Ritual Dismantler
 item.sigilOfMagnetism.name=Sigil of Magnetism
 item.itemDiabloKey.name=Key of Binding
 item.energyBazooka.name=Energy Bazooka
+item.energyBazookaSecondTier.name=Energy Bazooka II
 item.bloodLightSigil.name=Sigil of the Blood Lamp
 item.itemComplexSpellCrystal.name=Complex Spell Crystal
 item.itemSigilOfSupression.name=Sigil of Supression
@@ -501,7 +503,7 @@ message.ritualdemonportal.missingjar=A jar on one of the pillars appears to be m
 message.tanksegmenter.nowhas=Tank now has
 message.tanksegmenter.setto=Tank Segmenter now set to:
 message.tanksegmenter.tankssetto=tank(s) set to:
-message.routerfocus.limit=Focus' Item Limit set to: 
+message.routerfocus.limit=Focus' Item Limit set to:
 
 #Achievements
 achievement.alchemicalwizardry:firstPrick=Your First Prick!

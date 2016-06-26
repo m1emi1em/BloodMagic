@@ -317,8 +317,27 @@ public class AlchemicalWizardry
     public static HashMap<Class<?>, Integer> lpPerSactificeCustom;
 
     public static int energyBlastDamage = 12;
+    public static int energyBlastSecondTierDamage = 12;
+    public static int energyBlastLPPerShot = 150;
+    public static int energyBlastSecondTierLPPerShot = 150;
+    public static int energyBlastMaxDelay = 15;
+    public static int energyBlastMaxDelayAfterActivation = 100;
+    public static int energyBlastSecondTierMaxDelay = 15;
+    public static int energyBlastSecondTierMaxDelayAfterActivation = 100;
+    public static int energyBlastLPPerActivation = 50;
+    public static int energyBlastSecondTierLPPerActivation = 50;
     public static int energyBazookaDamage = 12;
+    public static int energyBazookaSecondTierDamage = 12;
     public static int energyBazookaSecondaryDamage = 15;
+    public static int energyBazookaSecondTierSecondaryDamage = 15;
+    public static int energyBazookaLPPerShot = 20000;
+    public static int energyBazookaSecondTierLPPerShot = 20000;
+    public static int energyBazookaMaxDelay = 150;
+    public static int energyBazookaMaxDelayAfterActivation = 100;
+    public static int energyBazookaSecondTierMaxDelay = 150;
+    public static int energyBazookaSecondTierMaxDelayAfterActivation = 100;
+    public static int energyBazookaLPPerActivation = 50;
+    public static int energyBazookaSecondTierLPPerActivation = 50;
 
     public static List<Class> wellBlacklist;
 

@@ -289,9 +289,28 @@ public class BloodMagicConfiguration
 		AlchemicalWizardry.lpPerSacrificeWellOfSuffering = config.get("sacrifice", "LP per sacrifice with Well of Suffering ritual", AlchemicalWizardry.lpPerSacrificeWellOfSuffering).getInt(AlchemicalWizardry.lpPerSacrificeWellOfSuffering);
 		AlchemicalWizardry.lpPerSacrificeIncense = config.get("sacrifice", "LP per (self-)sacrifice with incense", AlchemicalWizardry.lpPerSacrificeIncense).getDouble(AlchemicalWizardry.lpPerSacrificeIncense);
 
-		AlchemicalWizardry.energyBlastDamage = config.get("energy items damage", "Energy Blast damage", AlchemicalWizardry.energyBlastDamage).getInt(AlchemicalWizardry.energyBlastDamage);
-		AlchemicalWizardry.energyBazookaDamage = config.get("energy items damage", "Energy Bazooka damage", AlchemicalWizardry.energyBazookaDamage).getInt(AlchemicalWizardry.energyBazookaDamage);
-		AlchemicalWizardry.energyBazookaSecondaryDamage = config.get("energy items damage", "Energy Bazooka secondary damage", AlchemicalWizardry.energyBazookaSecondaryDamage).getInt(AlchemicalWizardry.energyBazookaSecondaryDamage);
+		AlchemicalWizardry.energyBlastDamage = config.get("energy items", "Energy Blast damage", AlchemicalWizardry.energyBlastDamage).getInt(AlchemicalWizardry.energyBlastDamage);
+		AlchemicalWizardry.energyBlastSecondTierDamage = config.get("energy items", "Energy Blast Tier II damage", AlchemicalWizardry.energyBlastSecondTierDamage).getInt(AlchemicalWizardry.energyBlastSecondTierDamage);
+		AlchemicalWizardry.energyBlastLPPerShot = config.get("energy items", "Energy Blast LP per shot", AlchemicalWizardry.energyBlastLPPerShot).getInt(AlchemicalWizardry.energyBlastLPPerShot);
+		AlchemicalWizardry.energyBlastSecondTierLPPerShot = config.get("energy items", "Energy Blast Tier II LP per shot", AlchemicalWizardry.energyBlastSecondTierLPPerShot).getInt(AlchemicalWizardry.energyBlastSecondTierLPPerShot);
+		AlchemicalWizardry.energyBlastMaxDelay = config.get("energy items", "Energy Blast maximum delay", AlchemicalWizardry.energyBlastMaxDelay).getInt(AlchemicalWizardry.energyBlastMaxDelay);
+		AlchemicalWizardry.energyBlastMaxDelayAfterActivation = config.get("energy items", "Energy Blast maximum delay after (re-)activation", AlchemicalWizardry.energyBlastMaxDelayAfterActivation).getInt(AlchemicalWizardry.energyBlastMaxDelayAfterActivation);
+		AlchemicalWizardry.energyBlastSecondTierMaxDelay = config.get("energy items", "Energy Blast Tier II maximum delay", AlchemicalWizardry.energyBlastSecondTierMaxDelay).getInt(AlchemicalWizardry.energyBlastSecondTierMaxDelay);
+		AlchemicalWizardry.energyBlastSecondTierMaxDelayAfterActivation = config.get("energy items", "Energy Blast Tier II maximum delay after (re-)activation", AlchemicalWizardry.energyBlastSecondTierMaxDelayAfterActivation).getInt(AlchemicalWizardry.energyBlastSecondTierMaxDelayAfterActivation);
+		AlchemicalWizardry.energyBlastLPPerActivation = config.get("energy items", "Energy Blast LP per activation", AlchemicalWizardry.energyBlastLPPerActivation).getInt(AlchemicalWizardry.energyBlastLPPerActivation);
+		AlchemicalWizardry.energyBlastSecondTierLPPerActivation = config.get("energy items", "Energy Blast Tier II LP per activation", AlchemicalWizardry.energyBlastSecondTierLPPerActivation).getInt(AlchemicalWizardry.energyBlastSecondTierLPPerActivation);
+		AlchemicalWizardry.energyBazookaDamage = config.get("energy items", "Energy Bazooka damage", AlchemicalWizardry.energyBazookaDamage).getInt(AlchemicalWizardry.energyBazookaDamage);
+		AlchemicalWizardry.energyBazookaSecondaryDamage = config.get("energy items", "Energy Bazooka secondary damage", AlchemicalWizardry.energyBazookaSecondaryDamage).getInt(AlchemicalWizardry.energyBazookaSecondaryDamage);
+		AlchemicalWizardry.energyBazookaSecondTierDamage = config.get("energy items", "Energy Bazooka Tier II damage", AlchemicalWizardry.energyBazookaSecondTierDamage).getInt(AlchemicalWizardry.energyBazookaSecondTierDamage);
+		AlchemicalWizardry.energyBazookaSecondTierSecondaryDamage = config.get("energy items", "Energy Bazooka Tier II secondary damage", AlchemicalWizardry.energyBazookaSecondTierSecondaryDamage).getInt(AlchemicalWizardry.energyBazookaSecondTierSecondaryDamage);
+		AlchemicalWizardry.energyBazookaLPPerShot = config.get("energy items", "Energy Bazooka LP per shot", AlchemicalWizardry.energyBazookaLPPerShot).getInt(AlchemicalWizardry.energyBazookaLPPerShot);
+		AlchemicalWizardry.energyBazookaSecondTierLPPerShot = config.get("energy items", "Energy Bazooka Tier II LP per shot", AlchemicalWizardry.energyBazookaSecondTierLPPerShot).getInt(AlchemicalWizardry.energyBazookaSecondTierLPPerShot);
+		AlchemicalWizardry.energyBazookaMaxDelay = config.get("energy items", "Energy Bazooka maximum delay", AlchemicalWizardry.energyBazookaMaxDelay).getInt(AlchemicalWizardry.energyBazookaMaxDelay);
+		AlchemicalWizardry.energyBazookaMaxDelayAfterActivation = config.get("energy items", "Energy Bazooka maximum delay after (re-)activation", AlchemicalWizardry.energyBazookaMaxDelayAfterActivation).getInt(AlchemicalWizardry.energyBazookaMaxDelayAfterActivation);
+		AlchemicalWizardry.energyBazookaSecondTierMaxDelay = config.get("energy items", "Energy Bazooka Tier II maximum delay", AlchemicalWizardry.energyBazookaSecondTierMaxDelay).getInt(AlchemicalWizardry.energyBazookaSecondTierMaxDelay);
+		AlchemicalWizardry.energyBazookaSecondTierMaxDelayAfterActivation = config.get("energy items", "Energy Bazooka Tier II maximum delay after (re-)activation", AlchemicalWizardry.energyBazookaSecondTierMaxDelayAfterActivation).getInt(AlchemicalWizardry.energyBazookaSecondTierMaxDelayAfterActivation);
+		AlchemicalWizardry.energyBazookaLPPerActivation = config.get("energy items", "Energy Bazooka LP per activation", AlchemicalWizardry.energyBazookaLPPerActivation).getInt(AlchemicalWizardry.energyBazookaLPPerActivation);
+		AlchemicalWizardry.energyBazookaSecondTierLPPerActivation = config.get("energy items", "Energy Bazooka Tier II LP per activation", AlchemicalWizardry.energyBazookaSecondTierLPPerActivation).getInt(AlchemicalWizardry.energyBazookaSecondTierLPPerActivation);
 
 		Side side = FMLCommonHandler.instance().getSide();
 		if (side == Side.CLIENT)
