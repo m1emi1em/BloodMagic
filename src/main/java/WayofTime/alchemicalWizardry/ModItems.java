@@ -66,6 +66,7 @@ public class ModItems
     public static Item magicianBloodOrb;
     public static Item energyBlaster;
     public static Item energyBlasterSecondTier;
+    public static Item energyBlasterThirdTier;
     public static Item energySword;
     public static Item lavaCrystal;
     public static Item waterSigil;
@@ -150,6 +151,7 @@ public class ModItems
     public static Item itemKeyOfDiablo;
     public static Item energyBazooka;
     public static Item energyBazookaSecondTier;
+    public static Item energyBazookaThirdTier;
     public static Item itemBloodLightSigil;
     public static Item itemComplexSpellCrystal;
     public static Item itemBloodFrame;
@@ -215,6 +217,7 @@ public class ModItems
         transcendentBloodOrb = new TranscendentBloodOrb(30000000).setUnlocalizedName("transcendentBloodOrb");
         energyBlaster = new EnergyBlast(1).setUnlocalizedName("energyBlast");
         energyBlasterSecondTier = new EnergyBlast(2).setUnlocalizedName("energyBlastSecondTier");
+        energyBlasterThirdTier = new EnergyBlast(3).setUnlocalizedName("energyBlastThirdTier");
         energySword = new EnergySword().setUnlocalizedName("energySword");
         lavaCrystal = new LavaCrystal().setUnlocalizedName("lavaCrystal");
         waterSigil = new SigilWater().setUnlocalizedName("waterSigil");
@@ -286,6 +289,7 @@ public class ModItems
         itemKeyOfDiablo = new ItemDiabloKey().setUnlocalizedName("itemDiabloKey");
         energyBazooka = new EnergyBazooka(1).setUnlocalizedName("energyBazooka");
         energyBazookaSecondTier = new EnergyBazooka(2).setUnlocalizedName("energyBazookaSecondTier");
+        energyBazookaThirdTier = new EnergyBazooka(3).setUnlocalizedName("energyBazookaThirdTier");
         itemBloodLightSigil = new SigilBloodLight().setUnlocalizedName("bloodLightSigil");
         itemComplexSpellCrystal = new ItemComplexSpellCrystal().setUnlocalizedName("itemComplexSpellCrystal");
         bucketLife = new LifeBucket(ModBlocks.blockLifeEssence).setUnlocalizedName("bucketLife").setContainerItem(Items.bucket).setCreativeTab(CreativeTabs.tabMisc);
@@ -346,7 +350,7 @@ public class ModItems
         GameRegistry.registerItem(ModItems.magicianBloodOrb, "magicianBloodOrb");
         GameRegistry.registerItem(ModItems.energyBlaster, "energyBlaster");
         GameRegistry.registerItem(ModItems.energyBlasterSecondTier, "energyBlasterSecondTier");
-
+        GameRegistry.registerItem(ModItems.energyBlasterThirdTier, "energyBlasterThirdTier");
         GameRegistry.registerItem(ModItems.energySword, "energySword");
         GameRegistry.registerItem(ModItems.lavaCrystal, "lavaCrystal");
         GameRegistry.registerItem(ModItems.waterSigil, "waterSigil");
@@ -422,6 +426,7 @@ public class ModItems
         GameRegistry.registerItem(ModItems.itemKeyOfDiablo, "itemKeyOfDiablo");
         GameRegistry.registerItem(ModItems.energyBazooka, "energyBazooka");
         GameRegistry.registerItem(ModItems.energyBazookaSecondTier, "energyBazookaSecondTier");
+        GameRegistry.registerItem(ModItems.energyBazookaThirdTier, "energyBazookaThirdTier");
         GameRegistry.registerItem(ModItems.itemBloodLightSigil, "itemBloodLightSigil");
         GameRegistry.registerItem(ModItems.itemComplexSpellCrystal, "itemComplexSpellCrystal");
         GameRegistry.registerItem(ModItems.itemSigilOfSupression, "sigilOfSupression");
