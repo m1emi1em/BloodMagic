@@ -21,18 +21,22 @@ public class EnergyBazooka extends EnergyItems
     @SideOnly(Side.CLIENT)
     private IIcon activeIcon;
     @SideOnly(Side.CLIENT)
+    private IIcon activeIconTier2;
+    @SideOnly(Side.CLIENT)
     private IIcon passiveIcon;
+    private int tier;
     private int damage;
 
-    public EnergyBazooka()
+    public EnergyBazooka(int tier)
     {
         super();
         setMaxStackSize(1);
         setCreativeTab(AlchemicalWizardry.tabBloodMagic);
         setFull3D();
         setMaxDamage(250);
-        this.setEnergyUsed(20000);
-        damage = AlchemicalWizardry.energyBazookaDamage;
+        this.tier = tier;
+        this.setEnergyUsed(tier == 1 ? AlchemicalWizardry.energyBazookaLPPerShot : AlchemicalWizardry.energyBazookaSecondTierLPPerShot);
+        this.damage = tier == 1 ? AlchemicalWizardry.energyBazookaDamage : AlchemicalWizardry.energyBazookaSecondTierDamage;
     }
 
     @Override
@@ -41,6 +45,7 @@ public class EnergyBazooka extends EnergyItems
     {
         this.itemIcon = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka_activated");
         this.activeIcon = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka_activated");
+        this.activeIconTier2 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka_activated");
         this.passiveIcon = iconRegister.registerIcon("AlchemicalWizardry:SheathedItem");
     }
 
@@ -56,8 +61,9 @@ public class EnergyBazooka extends EnergyItems
 
         if (tag.getBoolean("isActive"))
         {
-            return this.activeIcon;
-        } else
+            return tier == 1 ? this.activeIcon : this.activeIconTier2;
+        }
+        else
         {
             return this.passiveIcon;
         }
@@ -66,12 +72,15 @@ public class EnergyBazooka extends EnergyItems
     @Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-        final int maxDelay = 150;
+        final int maxDelay = tier == 1 ? AlchemicalWizardry.energyBazookaMaxDelay : AlchemicalWizardry.energyBazookaSecondTierMaxDelay;
 
         if (!EnergyItems.checkAndSetItemOwner(par1ItemStack, par3EntityPlayer) || par3EntityPlayer.isSneaking())
         {
             this.setActivated(par1ItemStack, !getActivated(par1ItemStack));
-            par1ItemStack.getTagCompound().setInteger("worldTimeDelay", (int) (par2World.getWorldTime() - 1) % 100);
+            par1ItemStack.getTagCompound().setInteger("worldTimeDelay", (int) (par2World.getWorldTime() - 1) %
+                                                                        (tier == 1 ?
+                                                                        AlchemicalWizardry.energyBazookaMaxDelayAfterActivation + 1 :
+                                                                        AlchemicalWizardry.energyBazookaSecondTierMaxDelayAfterActivation + 1));
             return par1ItemStack;
         }
 
@@ -132,11 +141,14 @@ public class EnergyBazooka extends EnergyItems
             this.setDelay(par1ItemStack, delay - 1);
         }
 
-        if (par2World.getWorldTime() % 100 == par1ItemStack.getTagCompound().getInteger("worldTimeDelay") && par1ItemStack.getTagCompound().getBoolean("isActive"))
+        if (par2World.getWorldTime() % (tier == 1 ?
+                                        AlchemicalWizardry.energyBazookaMaxDelayAfterActivation + 1 :
+                                        AlchemicalWizardry.energyBazookaSecondTierMaxDelayAfterActivation + 1) == par1ItemStack.getTagCompound().getInteger("worldTimeDelay") &&
+            par1ItemStack.getTagCompound().getBoolean("isActive"))
         {
             if (!par3EntityPlayer.capabilities.isCreativeMode)
             {
-                if(!EnergyItems.syphonBatteries(par1ItemStack, par3EntityPlayer, 50))
+                if(!EnergyItems.syphonBatteries(par1ItemStack, par3EntityPlayer, tier == 1 ? AlchemicalWizardry.energyBazookaLPPerActivation : AlchemicalWizardry.energyBazookaSecondTierLPPerActivation))
                 {
                 	this.setActivated(par1ItemStack, false);
                 }
@@ -147,6 +159,8 @@ public class EnergyBazooka extends EnergyItems
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
         par3List.add(StatCollector.translateToLocal("tooltip.energybazooka.desc"));
@@ -170,49 +184,37 @@ public class EnergyBazooka extends EnergyItems
 
     public void setActivated(ItemStack par1ItemStack, boolean newActivated)
     {
-        NBTTagCompound itemTag = par1ItemStack.getTagCompound();
-
-        if (itemTag == null)
+        if (par1ItemStack.getTagCompound() == null)
         {
             par1ItemStack.setTagCompound(new NBTTagCompound());
         }
-
-        itemTag.setBoolean("isActive", newActivated);
+        par1ItemStack.getTagCompound().setBoolean("isActive", newActivated);
     }
 
     public boolean getActivated(ItemStack par1ItemStack)
     {
-        NBTTagCompound itemTag = par1ItemStack.getTagCompound();
-
-        if (itemTag == null)
+        if (par1ItemStack.getTagCompound() == null)
         {
             par1ItemStack.setTagCompound(new NBTTagCompound());
         }
-
-        return itemTag.getBoolean("isActive");
+        return par1ItemStack.getTagCompound().getBoolean("isActive");
     }
 
     public void setDelay(ItemStack par1ItemStack, int newDelay)
     {
-        NBTTagCompound itemTag = par1ItemStack.getTagCompound();
-
-        if (itemTag == null)
+        if (par1ItemStack.getTagCompound() == null)
         {
             par1ItemStack.setTagCompound(new NBTTagCompound());
         }
-
-        itemTag.setInteger("delay", newDelay);
+        par1ItemStack.getTagCompound().setInteger("delay", newDelay);
     }
 
     public int getDelay(ItemStack par1ItemStack)
     {
-        NBTTagCompound itemTag = par1ItemStack.getTagCompound();
-
-        if (itemTag == null)
+        if (par1ItemStack.getTagCompound() == null)
         {
             par1ItemStack.setTagCompound(new NBTTagCompound());
         }
-
-        return itemTag.getInteger("delay");
+        return par1ItemStack.getTagCompound().getInteger("delay");
     }
 }
