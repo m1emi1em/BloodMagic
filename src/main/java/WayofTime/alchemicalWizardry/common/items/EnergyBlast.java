@@ -1,5 +1,7 @@
 package WayofTime.alchemicalWizardry.common.items;
 
+import java.util.List;
+
 import WayofTime.alchemicalWizardry.AlchemicalWizardry;
 import WayofTime.alchemicalWizardry.common.entity.projectile.EnergyBlastProjectile;
 import cpw.mods.fml.relauncher.Side;
@@ -12,8 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class EnergyBlast extends EnergyItems
 {
@@ -32,7 +32,7 @@ public class EnergyBlast extends EnergyItems
         setFull3D();
         setMaxDamage(250);
         this.setEnergyUsed(150);
-        damage = 12;
+        damage = AlchemicalWizardry.energyBlastDamage;
     }
 
     @Override

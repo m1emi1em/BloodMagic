@@ -1,5 +1,7 @@
 package WayofTime.alchemicalWizardry.common.items;
 
+import java.util.List;
+
 import WayofTime.alchemicalWizardry.AlchemicalWizardry;
 import WayofTime.alchemicalWizardry.common.entity.projectile.EntityEnergyBazookaMainProjectile;
 import cpw.mods.fml.relauncher.Side;
@@ -13,8 +15,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class EnergyBazooka extends EnergyItems
 {
@@ -32,7 +32,7 @@ public class EnergyBazooka extends EnergyItems
         setFull3D();
         setMaxDamage(250);
         this.setEnergyUsed(20000);
-        damage = 12;
+        damage = AlchemicalWizardry.energyBazookaDamage;
     }
 
     @Override

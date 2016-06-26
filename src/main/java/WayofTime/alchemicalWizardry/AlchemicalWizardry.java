@@ -316,6 +316,10 @@ public class AlchemicalWizardry
     public static double lpPerSacrificeIncense = 100.0D;
     public static HashMap<Class<?>, Integer> lpPerSactificeCustom;
 
+    public static int energyBlastDamage = 12;
+    public static int energyBazookaDamage = 12;
+    public static int energyBazookaSecondaryDamage = 15;
+
     public static List<Class> wellBlacklist;
 
 	public static Logger logger = LogManager.getLogger("BloodMagic");

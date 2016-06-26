@@ -289,6 +289,10 @@ public class BloodMagicConfiguration
 		AlchemicalWizardry.lpPerSacrificeWellOfSuffering = config.get("sacrifice", "LP per sacrifice with Well of Suffering ritual", AlchemicalWizardry.lpPerSacrificeWellOfSuffering).getInt(AlchemicalWizardry.lpPerSacrificeWellOfSuffering);
 		AlchemicalWizardry.lpPerSacrificeIncense = config.get("sacrifice", "LP per (self-)sacrifice with incense", AlchemicalWizardry.lpPerSacrificeIncense).getDouble(AlchemicalWizardry.lpPerSacrificeIncense);
 
+		AlchemicalWizardry.energyBlastDamage = config.get("energy items damage", "Energy Blast damage", AlchemicalWizardry.energyBlastDamage).getInt(AlchemicalWizardry.energyBlastDamage);
+		AlchemicalWizardry.energyBazookaDamage = config.get("energy items damage", "Energy Bazooka damage", AlchemicalWizardry.energyBazookaDamage).getInt(AlchemicalWizardry.energyBazookaDamage);
+		AlchemicalWizardry.energyBazookaSecondaryDamage = config.get("energy items damage", "Energy Bazooka secondary damage", AlchemicalWizardry.energyBazookaSecondaryDamage).getInt(AlchemicalWizardry.energyBazookaSecondaryDamage);
+
 		Side side = FMLCommonHandler.instance().getSide();
 		if (side == Side.CLIENT)
 		{
