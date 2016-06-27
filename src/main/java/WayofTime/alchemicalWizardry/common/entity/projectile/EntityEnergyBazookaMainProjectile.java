@@ -83,11 +83,22 @@ public class EntityEnergyBazookaMainProjectile extends EnergyBlastProjectile
 
     public void spawnSecondaryProjectiles()
     {
+        int secondaryDamage = 0;
+        if (this.projectileDamage == AlchemicalWizardry.energyBazookaDamage)
+        {
+            secondaryDamage = AlchemicalWizardry.energyBazookaSecondaryDamage;
+        }
+        if (this.projectileDamage == AlchemicalWizardry.energyBazookaSecondTierDamage)
+        {
+            secondaryDamage = AlchemicalWizardry.energyBazookaSecondTierSecondaryDamage;
+        }
+        if (this.projectileDamage == AlchemicalWizardry.energyBazookaThirdTierDamage)
+        {
+            secondaryDamage = AlchemicalWizardry.energyBazookaThirdTierSecondaryDamage;
+        }
         for (int i = 0; i < 20; i++)
         {
-            EntityEnergyBazookaSecondaryProjectile secProj = new EntityEnergyBazookaSecondaryProjectile(worldObj, this.posX, this.posY, this.posZ, this.projectileDamage == AlchemicalWizardry.energyBazookaDamage ?
-                                                                                                                                                   AlchemicalWizardry.energyBazookaSecondaryDamage :
-                                                                                                                                                   AlchemicalWizardry.energyBazookaSecondTierSecondaryDamage);
+            EntityEnergyBazookaSecondaryProjectile secProj = new EntityEnergyBazookaSecondaryProjectile(worldObj, this.posX, this.posY, this.posZ, secondaryDamage);
             secProj.shootingEntity = this.shootingEntity;
             float xVel = rand.nextFloat() - rand.nextFloat();
             float yVel = rand.nextFloat() - rand.nextFloat();
