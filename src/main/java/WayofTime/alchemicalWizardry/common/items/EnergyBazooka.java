@@ -23,6 +23,8 @@ public class EnergyBazooka extends EnergyItems
     @SideOnly(Side.CLIENT)
     private IIcon activeIconTier2;
     @SideOnly(Side.CLIENT)
+    private IIcon activeIconTier3;
+    @SideOnly(Side.CLIENT)
     private IIcon passiveIcon;
     private int tier;
     private int damage;
@@ -35,8 +37,21 @@ public class EnergyBazooka extends EnergyItems
         setFull3D();
         setMaxDamage(250);
         this.tier = tier;
-        this.setEnergyUsed(tier == 1 ? AlchemicalWizardry.energyBazookaLPPerShot : AlchemicalWizardry.energyBazookaSecondTierLPPerShot);
-        this.damage = tier == 1 ? AlchemicalWizardry.energyBazookaDamage : AlchemicalWizardry.energyBazookaSecondTierDamage;
+        switch (this.tier)
+        {
+            case 1:
+                this.setEnergyUsed(AlchemicalWizardry.energyBazookaLPPerShot);
+                this.damage = AlchemicalWizardry.energyBazookaDamage;
+                break;
+            case 2:
+                this.setEnergyUsed(AlchemicalWizardry.energyBazookaSecondTierLPPerShot);
+                this.damage = AlchemicalWizardry.energyBazookaSecondTierDamage;
+                break;
+            case 3:
+                this.setEnergyUsed(AlchemicalWizardry.energyBazookaThirdTierLPPerShot);
+                this.damage = AlchemicalWizardry.energyBazookaThirdTierDamage;
+                break;
+        }
     }
 
     @Override
@@ -46,6 +61,7 @@ public class EnergyBazooka extends EnergyItems
         this.itemIcon = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka_activated");
         this.activeIcon = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka_activated");
         this.activeIconTier2 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka_activated");
+        this.activeIconTier3 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka_activated");
         this.passiveIcon = iconRegister.registerIcon("AlchemicalWizardry:SheathedItem");
     }
 
@@ -61,7 +77,16 @@ public class EnergyBazooka extends EnergyItems
 
         if (tag.getBoolean("isActive"))
         {
-            return tier == 1 ? this.activeIcon : this.activeIconTier2;
+            switch (this.tier)
+            {
+                case 1:
+                    return this.activeIcon;
+                case 2:
+                    return this.activeIconTier2;
+                case 3:
+                    return this.activeIconTier3;
+            }
+            return this.activeIcon;
         }
         else
         {
@@ -72,15 +97,27 @@ public class EnergyBazooka extends EnergyItems
     @Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-        final int maxDelay = tier == 1 ? AlchemicalWizardry.energyBazookaMaxDelay : AlchemicalWizardry.energyBazookaSecondTierMaxDelay;
-
+        int maxDelay = 1;
+        int maxDelayAfterActivation = 1;
+        switch (this.tier)
+        {
+            case 1:
+                maxDelay = AlchemicalWizardry.energyBazookaMaxDelay;
+                maxDelayAfterActivation = AlchemicalWizardry.energyBazookaMaxDelayAfterActivation + 1;
+                break;
+            case 2:
+                maxDelay = AlchemicalWizardry.energyBazookaSecondTierMaxDelay;
+                maxDelayAfterActivation = AlchemicalWizardry.energyBazookaSecondTierMaxDelayAfterActivation + 1;
+                break;
+            case 3:
+                maxDelay = AlchemicalWizardry.energyBazookaThirdTierMaxDelay;
+                maxDelayAfterActivation = AlchemicalWizardry.energyBazookaThirdTierMaxDelayAfterActivation + 1;
+                break;
+        }
         if (!EnergyItems.checkAndSetItemOwner(par1ItemStack, par3EntityPlayer) || par3EntityPlayer.isSneaking())
         {
             this.setActivated(par1ItemStack, !getActivated(par1ItemStack));
-            par1ItemStack.getTagCompound().setInteger("worldTimeDelay", (int) (par2World.getWorldTime() - 1) %
-                                                                        (tier == 1 ?
-                                                                        AlchemicalWizardry.energyBazookaMaxDelayAfterActivation + 1 :
-                                                                        AlchemicalWizardry.energyBazookaSecondTierMaxDelayAfterActivation + 1));
+            par1ItemStack.getTagCompound().setInteger("worldTimeDelay", (int) (par2World.getWorldTime() - 1) % maxDelayAfterActivation);
             return par1ItemStack;
         }
 
@@ -106,12 +143,12 @@ public class EnergyBazooka extends EnergyItems
 
         if (!par2World.isRemote)
         {
-            par2World.spawnEntityInWorld(new EntityEnergyBazookaMainProjectile(par2World, par3EntityPlayer, damage));
+            par2World.spawnEntityInWorld(new EntityEnergyBazookaMainProjectile(par2World, par3EntityPlayer, this.damage));
             this.setDelay(par1ItemStack, maxDelay);
         }
 
         Vec3 vec = par3EntityPlayer.getLookVec();
-        double wantedVelocity = 3.0f;
+        double wantedVelocity = (double) this.tier * 2.0D;
         par3EntityPlayer.motionX = -vec.xCoord * wantedVelocity;
         par3EntityPlayer.motionY = -vec.yCoord * wantedVelocity;
         par3EntityPlayer.motionZ = -vec.zCoord * wantedVelocity;
@@ -140,15 +177,29 @@ public class EnergyBazooka extends EnergyItems
         {
             this.setDelay(par1ItemStack, delay - 1);
         }
-
-        if (par2World.getWorldTime() % (tier == 1 ?
-                                        AlchemicalWizardry.energyBazookaMaxDelayAfterActivation + 1 :
-                                        AlchemicalWizardry.energyBazookaSecondTierMaxDelayAfterActivation + 1) == par1ItemStack.getTagCompound().getInteger("worldTimeDelay") &&
+        int lpPerActivation = 0;
+        int maxDelayAfterActivation = 1;
+        switch (this.tier)
+        {
+            case 1:
+                lpPerActivation = AlchemicalWizardry.energyBazookaLPPerActivation;
+                maxDelayAfterActivation = AlchemicalWizardry.energyBazookaMaxDelayAfterActivation + 1;
+                break;
+            case 2:
+                lpPerActivation = AlchemicalWizardry.energyBazookaSecondTierLPPerActivation;
+                maxDelayAfterActivation = AlchemicalWizardry.energyBazookaSecondTierMaxDelayAfterActivation + 1;
+                break;
+            case 3:
+                lpPerActivation = AlchemicalWizardry.energyBazookaThirdTierLPPerActivation;
+                maxDelayAfterActivation = AlchemicalWizardry.energyBazookaThirdTierMaxDelayAfterActivation + 1;
+                break;
+        }
+        if (par2World.getWorldTime() % maxDelayAfterActivation == par1ItemStack.getTagCompound().getInteger("worldTimeDelay") &&
             par1ItemStack.getTagCompound().getBoolean("isActive"))
         {
             if (!par3EntityPlayer.capabilities.isCreativeMode)
             {
-                if(!EnergyItems.syphonBatteries(par1ItemStack, par3EntityPlayer, tier == 1 ? AlchemicalWizardry.energyBazookaLPPerActivation : AlchemicalWizardry.energyBazookaSecondTierLPPerActivation))
+                if(!EnergyItems.syphonBatteries(par1ItemStack, par3EntityPlayer, lpPerActivation))
                 {
                 	this.setActivated(par1ItemStack, false);
                 }
@@ -164,17 +215,17 @@ public class EnergyBazooka extends EnergyItems
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
         par3List.add(StatCollector.translateToLocal("tooltip.energybazooka.desc"));
-
+        par3List.add(StatCollector.translateToLocal("tooltip.alchemy.damage") + " " + this.damage);
         if (!(par1ItemStack.getTagCompound() == null))
         {
             if (par1ItemStack.getTagCompound().getBoolean("isActive"))
             {
                 par3List.add(StatCollector.translateToLocal("tooltip.sigil.state.activated"));
-            } else
+            }
+            else
             {
                 par3List.add(StatCollector.translateToLocal("tooltip.sigil.state.deactivated"));
             }
-
             if (!par1ItemStack.getTagCompound().getString("ownerName").equals(""))
             {
                 par3List.add(StatCollector.translateToLocal("tooltip.owner.currentowner") + " " + par1ItemStack.getTagCompound().getString("ownerName"));

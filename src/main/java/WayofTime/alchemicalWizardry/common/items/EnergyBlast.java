@@ -22,6 +22,8 @@ public class EnergyBlast extends EnergyItems
     @SideOnly(Side.CLIENT)
     private IIcon activeIconTier2;
     @SideOnly(Side.CLIENT)
+    private IIcon activeIconTier3;
+    @SideOnly(Side.CLIENT)
     private IIcon passiveIcon;
     private int tier;
     private int damage;
@@ -35,8 +37,21 @@ public class EnergyBlast extends EnergyItems
         setFull3D();
         setMaxDamage(250);
         this.tier = tier;
-        this.setEnergyUsed(this.tier == 1 ? AlchemicalWizardry.energyBlastLPPerShot : AlchemicalWizardry.energyBlastSecondTierLPPerShot);
-        this.damage = this.tier == 1 ? AlchemicalWizardry.energyBlastDamage : AlchemicalWizardry.energyBlastSecondTierDamage;
+        switch (this.tier)
+        {
+            case 1:
+                this.setEnergyUsed(AlchemicalWizardry.energyBlastLPPerShot);
+                this.damage = AlchemicalWizardry.energyBlastDamage;
+                break;
+            case 2:
+                this.setEnergyUsed(AlchemicalWizardry.energyBlastSecondTierLPPerShot);
+                this.damage = AlchemicalWizardry.energyBlastSecondTierDamage;
+                break;
+            case 3:
+                this.setEnergyUsed(AlchemicalWizardry.energyBlastThirdTierLPPerShot);
+                this.damage = AlchemicalWizardry.energyBlastThirdTierDamage;
+                break;
+        }
     }
 
     @Override
@@ -46,6 +61,7 @@ public class EnergyBlast extends EnergyItems
         this.itemIcon = iconRegister.registerIcon("AlchemicalWizardry:EnergyBlaster_activated");
         this.activeIcon = iconRegister.registerIcon("AlchemicalWizardry:EnergyBlaster_activated");
         this.activeIconTier2 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBlaster_activated");
+        this.activeIconTier3 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBlaster_activated");
         this.passiveIcon = iconRegister.registerIcon("AlchemicalWizardry:SheathedItem");
     }
 
@@ -62,7 +78,16 @@ public class EnergyBlast extends EnergyItems
 
         if (tag.getBoolean("isActive"))
         {
-            return this.tier == 1 ? this.activeIcon : this.activeIconTier2;
+            switch (this.tier)
+            {
+                case 1:
+                    return this.activeIcon;
+                case 2:
+                    return this.activeIconTier2;
+                case 3:
+                    return this.activeIconTier3;
+            }
+            return this.activeIcon;
         }
         else
         {
@@ -73,15 +98,27 @@ public class EnergyBlast extends EnergyItems
     @Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-        final int maxDelay = this.tier == 1 ? AlchemicalWizardry.energyBlastMaxDelay : AlchemicalWizardry.energyBlastSecondTierMaxDelay;
-
+        int maxDelay = 1;
+        int maxDelayAfterActivation = 1;
+        switch (this.tier)
+        {
+            case 1:
+                maxDelay = AlchemicalWizardry.energyBlastMaxDelay;
+                maxDelayAfterActivation = AlchemicalWizardry.energyBlastMaxDelayAfterActivation + 1;
+                break;
+            case 2:
+                maxDelay = AlchemicalWizardry.energyBlastSecondTierMaxDelay;
+                maxDelayAfterActivation = AlchemicalWizardry.energyBlastSecondTierMaxDelayAfterActivation + 1;
+                break;
+            case 3:
+                maxDelay = AlchemicalWizardry.energyBlastThirdTierMaxDelay;
+                maxDelayAfterActivation = AlchemicalWizardry.energyBlastThirdTierMaxDelayAfterActivation + 1;
+                break;
+        }
         if (!EnergyItems.checkAndSetItemOwner(par1ItemStack, par3EntityPlayer) || par3EntityPlayer.isSneaking())
         {
             this.setActivated(par1ItemStack, !getActivated(par1ItemStack));
-            par1ItemStack.getTagCompound().setInteger("worldTimeDelay", (int) (par2World.getWorldTime() - 1) %
-                                                                        (this.tier == 1 ?
-                                                                         AlchemicalWizardry.energyBlastMaxDelayAfterActivation + 1 :
-                                                                         AlchemicalWizardry.energyBlastSecondTierMaxDelayAfterActivation + 1));
+            par1ItemStack.getTagCompound().setInteger("worldTimeDelay", (int) (par2World.getWorldTime() - 1) % maxDelayAfterActivation);
             return par1ItemStack;
         }
 
@@ -107,7 +144,7 @@ public class EnergyBlast extends EnergyItems
 
         if (!par2World.isRemote)
         {
-            par2World.spawnEntityInWorld(new EnergyBlastProjectile(par2World, par3EntityPlayer, damage));
+            par2World.spawnEntityInWorld(new EnergyBlastProjectile(par2World, par3EntityPlayer, this.damage));
             this.setDelay(par1ItemStack, maxDelay);
         }
 
@@ -133,15 +170,29 @@ public class EnergyBlast extends EnergyItems
         {
             this.setDelay(par1ItemStack, delay - 1);
         }
-
-        if (par2World.getWorldTime() % (this.tier == 1 ?
-                                        AlchemicalWizardry.energyBlastMaxDelayAfterActivation + 1 :
-                                        AlchemicalWizardry.energyBlastSecondTierMaxDelayAfterActivation + 1) == par1ItemStack.getTagCompound().getInteger("worldTimeDelay") &&
+        int lpPerActivation = 0;
+        int maxDelayAfterActivation = 1;
+        switch (this.tier)
+        {
+            case 1:
+                lpPerActivation = AlchemicalWizardry.energyBlastLPPerActivation;
+                maxDelayAfterActivation = AlchemicalWizardry.energyBlastMaxDelayAfterActivation + 1;
+                break;
+            case 2:
+                lpPerActivation = AlchemicalWizardry.energyBlastSecondTierLPPerActivation;
+                maxDelayAfterActivation = AlchemicalWizardry.energyBlastSecondTierMaxDelayAfterActivation + 1;
+                break;
+            case 3:
+                lpPerActivation = AlchemicalWizardry.energyBlastThirdTierLPPerActivation;
+                maxDelayAfterActivation = AlchemicalWizardry.energyBlastThirdTierMaxDelayAfterActivation + 1;
+                break;
+        }
+        if (par2World.getWorldTime() % maxDelayAfterActivation == par1ItemStack.getTagCompound().getInteger("worldTimeDelay") &&
             par1ItemStack.getTagCompound().getBoolean("isActive"))
         {
             if (!par3EntityPlayer.capabilities.isCreativeMode)
             {
-                if(!EnergyItems.syphonBatteries(par1ItemStack, par3EntityPlayer, tier == 1 ? AlchemicalWizardry.energyBlastLPPerActivation : AlchemicalWizardry.energyBlastSecondTierLPPerActivation))
+                if(!EnergyItems.syphonBatteries(par1ItemStack, par3EntityPlayer, lpPerActivation))
                 {
                 	this.setActivated(par1ItemStack, false);
                 }
@@ -158,18 +209,17 @@ public class EnergyBlast extends EnergyItems
     {
         par3List.add(StatCollector.translateToLocal("tooltip.energyblast.desc1"));
         par3List.add(StatCollector.translateToLocal("tooltip.energyblast.desc2"));
-        par3List.add(StatCollector.translateToLocal("tooltip.alchemy.damage") + " " + damage);
-
+        par3List.add(StatCollector.translateToLocal("tooltip.alchemy.damage") + " " + this.damage);
         if (!(par1ItemStack.getTagCompound() == null))
         {
             if (par1ItemStack.getTagCompound().getBoolean("isActive"))
             {
                 par3List.add(StatCollector.translateToLocal("tooltip.sigil.state.activated"));
-            } else
+            }
+            else
             {
                 par3List.add(StatCollector.translateToLocal("tooltip.sigil.state.deactivated"));
             }
-
             if (!par1ItemStack.getTagCompound().getString("ownerName").equals(""))
             {
                 par3List.add(StatCollector.translateToLocal("tooltip.owner.currentowner") + " " + par1ItemStack.getTagCompound().getString("ownerName"));
