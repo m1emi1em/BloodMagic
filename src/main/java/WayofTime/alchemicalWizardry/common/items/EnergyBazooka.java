@@ -60,8 +60,8 @@ public class EnergyBazooka extends EnergyItems
     {
         this.itemIcon = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka_activated");
         this.activeIcon = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka_activated");
-        this.activeIconTier2 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka_activated");
-        this.activeIconTier3 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka_activated");
+        this.activeIconTier2 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka2_activated");
+        this.activeIconTier3 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka3_activated");
         this.passiveIcon = iconRegister.registerIcon("AlchemicalWizardry:SheathedItem");
     }
 

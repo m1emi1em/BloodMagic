@@ -60,8 +60,8 @@ public class EnergyBlast extends EnergyItems
     {
         this.itemIcon = iconRegister.registerIcon("AlchemicalWizardry:EnergyBlaster_activated");
         this.activeIcon = iconRegister.registerIcon("AlchemicalWizardry:EnergyBlaster_activated");
-        this.activeIconTier2 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBlaster_activated");
-        this.activeIconTier3 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBlaster_activated");
+        this.activeIconTier2 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBlaster2_activated");
+        this.activeIconTier3 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBlaster3_activated");
         this.passiveIcon = iconRegister.registerIcon("AlchemicalWizardry:SheathedItem");
     }
 
