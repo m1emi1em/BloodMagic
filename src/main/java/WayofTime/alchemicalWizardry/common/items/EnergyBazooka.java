@@ -23,8 +23,6 @@ public class EnergyBazooka extends EnergyItems
     @SideOnly(Side.CLIENT)
     private IIcon activeIconTier2;
     @SideOnly(Side.CLIENT)
-    private IIcon activeIconTier3;
-    @SideOnly(Side.CLIENT)
     private IIcon passiveIcon;
     private int tier;
     private int damage;
@@ -39,8 +37,6 @@ public class EnergyBazooka extends EnergyItems
         this.tier = tier;
         this.setEnergyUsed(tier == 1 ? AlchemicalWizardry.energyBazookaLPPerShot : AlchemicalWizardry.energyBazookaSecondTierLPPerShot);
         this.damage = tier == 1 ? AlchemicalWizardry.energyBazookaDamage : AlchemicalWizardry.energyBazookaSecondTierDamage;
-        this.setEnergyUsed(tier == 2 ? AlchemicalWizardry.energyBazookaSecondTierLPPerShot : AlchemicalWizardry.energyBazookaThirdTierLPPerShot);
-        this.damage = tier == 2 ? AlchemicalWizardry.energyBazookaSecondTierDamage : AlchemicalWizardry.energyBazookaThirdTierDamage;
     }
 
     @Override
@@ -49,8 +45,7 @@ public class EnergyBazooka extends EnergyItems
     {
         this.itemIcon = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka_activated");
         this.activeIcon = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka_activated");
-        this.activeIconTier2 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka2_activated");
-        this.activeIconTier3 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka3_activated");
+        this.activeIconTier2 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBazooka_activated");
         this.passiveIcon = iconRegister.registerIcon("AlchemicalWizardry:SheathedItem");
     }
 
@@ -67,10 +62,8 @@ public class EnergyBazooka extends EnergyItems
         if (tag.getBoolean("isActive"))
         {
             return tier == 1 ? this.activeIcon : this.activeIconTier2;
-
         }
-
-            else
+        else
         {
             return this.passiveIcon;
         }
@@ -80,7 +73,6 @@ public class EnergyBazooka extends EnergyItems
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         final int maxDelay = tier == 1 ? AlchemicalWizardry.energyBazookaMaxDelay : AlchemicalWizardry.energyBazookaSecondTierMaxDelay;
-
 
         if (!EnergyItems.checkAndSetItemOwner(par1ItemStack, par3EntityPlayer) || par3EntityPlayer.isSneaking())
         {
@@ -172,7 +164,6 @@ public class EnergyBazooka extends EnergyItems
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
         par3List.add(StatCollector.translateToLocal("tooltip.energybazooka.desc"));
-        par3List.add(StatCollector.translateToLocal("tooltip.alchemy.damage") + " " + damage);
 
         if (!(par1ItemStack.getTagCompound() == null))
         {

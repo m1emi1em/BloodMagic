@@ -22,8 +22,6 @@ public class EnergyBlast extends EnergyItems
     @SideOnly(Side.CLIENT)
     private IIcon activeIconTier2;
     @SideOnly(Side.CLIENT)
-    private IIcon activeIconTier3;
-    @SideOnly(Side.CLIENT)
     private IIcon passiveIcon;
     private int tier;
     private int damage;
@@ -47,7 +45,7 @@ public class EnergyBlast extends EnergyItems
     {
         this.itemIcon = iconRegister.registerIcon("AlchemicalWizardry:EnergyBlaster_activated");
         this.activeIcon = iconRegister.registerIcon("AlchemicalWizardry:EnergyBlaster_activated");
-        this.activeIconTier2 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBlaster2_activated");
+        this.activeIconTier2 = iconRegister.registerIcon("AlchemicalWizardry:EnergyBlaster_activated");
         this.passiveIcon = iconRegister.registerIcon("AlchemicalWizardry:SheathedItem");
     }
 
