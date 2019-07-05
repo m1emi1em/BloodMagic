@@ -2,8 +2,11 @@ package WayofTime.alchemicalWizardry.client.nei;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import codechicken.nei.ItemList;
+import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -14,6 +17,8 @@ import WayofTime.alchemicalWizardry.api.items.interfaces.IBloodOrb;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.ShapedRecipeHandler;
+
+import static WayofTime.alchemicalWizardry.client.nei.NEIConfig.bloodOrbs;
 
 /**
  * NEI Blood Orb Shaped Recipe Handler by joshie *
@@ -38,12 +43,12 @@ public class NEIBloodOrbShapedHandler extends ShapedRecipeHandler {
 						ingredients.add(stack);
 					} else if (o instanceof Integer) {
 						ArrayList<ItemStack> orbs = new ArrayList();
-						for (Item item : NEIConfig.bloodOrbs) {
+						for (Item item : bloodOrbs) {
 							if (((IBloodOrb) item).getOrbLevel() >= (Integer) o) {
 								orbs.add(new ItemStack(item));
 							}
 						}
-
+						if (orbs.isEmpty()) throw new RuntimeException("Invalid blood orb level " + o.toString() + " with recepie: " + Arrays.asList(items).toString() + " and existing orbs are: " + bloodOrbs);
 						PositionedStack stack = new PositionedStack(orbs, 25 + x * 18, 6 + y * 18, false);
 						stack.setMaxSize(1);
 						ingredients.add(stack);
@@ -138,5 +143,18 @@ public class NEIBloodOrbShapedHandler extends ShapedRecipeHandler {
 	@Override
 	public String getRecipeName() {
 		return StatCollector.translateToLocal("bm.string.crafting.orb.shaped");
+
 	}
+		@Override
+		public TemplateRecipeHandler newInstance() {
+			for (ItemStack item : ItemList.items) {
+				if (item != null && item.getItem() instanceof IBloodOrb) {
+					bloodOrbs.add(item.getItem());
+				}
+			}
+
+			return super.newInstance();
+
+	}
+
 }
