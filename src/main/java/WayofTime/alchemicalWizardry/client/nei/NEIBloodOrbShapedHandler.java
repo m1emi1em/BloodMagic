@@ -2,11 +2,12 @@ package WayofTime.alchemicalWizardry.client.nei;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import codechicken.nei.ItemList;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -48,12 +49,10 @@ public class NEIBloodOrbShapedHandler extends ShapedRecipeHandler {
 								orbs.add(new ItemStack(item));
 							}
 						}
-						if (orbs.isEmpty()) throw new RuntimeException("Invalid blood orb level " + o.toString() + " with recepie: " + Arrays.asList(items).toString() + " and existing orbs are: " + bloodOrbs);
 						PositionedStack stack = new PositionedStack(orbs, 25 + x * 18, 6 + y * 18, false);
 						stack.setMaxSize(1);
 						ingredients.add(stack);
-					}else if(o instanceof List)
-					{
+					} else if(o instanceof List) {
 						PositionedStack stack = new PositionedStack(o, 25 + x * 18, 6 + y * 18, false);
 						stack.setMaxSize(1);
 						ingredients.add(stack);
@@ -145,16 +144,27 @@ public class NEIBloodOrbShapedHandler extends ShapedRecipeHandler {
 		return StatCollector.translateToLocal("bm.string.crafting.orb.shaped");
 
 	}
-		@Override
-		public TemplateRecipeHandler newInstance() {
-			for (ItemStack item : ItemList.items) {
-				if (item != null && item.getItem() instanceof IBloodOrb) {
-					bloodOrbs.add(item.getItem());
-				}
-			}
-
-			return super.newInstance();
-
+    @Override
+    public TemplateRecipeHandler newInstance() {
+        // We need to populate available blood orbs,
+        //   but don't try to do it more than once
+	    if (bloodOrbs.isEmpty()) {
+            for (ItemStack item : ItemList.items) {
+                if (item != null && item.getItem() instanceof IBloodOrb) {
+                    bloodOrbs.add(item.getItem());
+                }
+            }
+            if (bloodOrbs.isEmpty()) {
+                // If there is NEI no cache - go to item registry
+                for (Object anItemRegistry : Item.itemRegistry) {
+                    Item item = (Item) anItemRegistry;
+                    if (item != null && item instanceof IBloodOrb) {
+                        bloodOrbs.add(item);
+                    }
+                }
+            }
+        }
+        return super.newInstance();
 	}
 
 }
