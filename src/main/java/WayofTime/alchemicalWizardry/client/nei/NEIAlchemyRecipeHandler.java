@@ -83,12 +83,24 @@ public class NEIAlchemyRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public TemplateRecipeHandler newInstance() {
-        for (ItemStack item : ItemList.items) {
-            if (item != null && item.getItem() instanceof IBloodOrb) {
-                bloodOrbs.add(item.getItem());
+        // We need to populate available blood orbs,
+        //   but don't try to do it more than once
+        if (bloodOrbs.isEmpty()) {
+            for (ItemStack item : ItemList.items) {
+                if (item != null && item.getItem() instanceof IBloodOrb) {
+                    bloodOrbs.add(item.getItem());
+                }
+            }
+            if (bloodOrbs.isEmpty()) {
+                // If there is NEI no cache - go to item registry
+                for (Object anItemRegistry : Item.itemRegistry) {
+                    Item item = (Item) anItemRegistry;
+                    if (item != null && item instanceof IBloodOrb) {
+                        bloodOrbs.add(item);
+                    }
+                }
             }
         }
-
         return super.newInstance();
     }
 
