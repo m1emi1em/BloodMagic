@@ -146,10 +146,14 @@ public class TETeleposer extends TEInventory
                         {
                             entityCount = 0;
                         }
-
-                        SoulNetworkHandler.syphonFromNetwork(focus, damage * transportCount + damage * entityCount);
-                        //Teleport
-
+			
+                        //Teleport			
+			if (damage * transportCount + damage * entityCount < 2000) {
+				SoulNetworkHandler.syphonFromNetwork(focus, 2000);
+			} else {
+				SoulNetworkHandler.syphonFromNetwork(focus, damage * transportCount + damage * entityCount);
+			}
+			
                         if (worldF.equals(worldObj))
                         {
                             iterator1 = list1.iterator();
