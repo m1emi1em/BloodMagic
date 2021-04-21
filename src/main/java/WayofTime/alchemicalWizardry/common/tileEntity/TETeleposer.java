@@ -2,7 +2,6 @@ package WayofTime.alchemicalWizardry.common.tileEntity;
 
 import java.util.Iterator;
 import java.util.List;
-import 
 
 import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
 import net.minecraft.entity.EntityLivingBase;
