@@ -2,6 +2,7 @@ package WayofTime.alchemicalWizardry.common.tileEntity;
 
 import java.util.Iterator;
 import java.util.List;
+import 
 
 import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
 import net.minecraft.entity.EntityLivingBase;
@@ -147,12 +148,9 @@ public class TETeleposer extends TEInventory
                             entityCount = 0;
                         }
 			
-                        //Teleport			
-			if (damage * transportCount + damage * entityCount < 2000) {
-				SoulNetworkHandler.syphonFromNetwork(focus, 2000);
-			} else {
-				SoulNetworkHandler.syphonFromNetwork(focus, damage * transportCount + damage * entityCount);
-			}
+                        //Teleport with minimum cost of 2000 LP.
+			int cost = Math.max(damage * transportCount + damage * entityCount, 2000);
+			SoulNetworkHandler.syphonFromNetwork(focus, cost);
 			
                         if (worldF.equals(worldObj))
                         {
