@@ -66,7 +66,6 @@ import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.ice.*;
 import WayofTime.alchemicalWizardry.common.spell.complex.effect.cse.wind.*;
 import WayofTime.alchemicalWizardry.common.spell.simple.*;
 import WayofTime.alchemicalWizardry.common.summoning.SummoningHelperAW;
-import WayofTime.alchemicalWizardry.common.thread.CommandDownloadGAPI;
 import WayofTime.alchemicalWizardry.common.tileEntity.*;
 import WayofTime.alchemicalWizardry.common.tileEntity.gui.GuiHandler;
 import WayofTime.alchemicalWizardry.common.tweaker.MineTweakerIntegration;
@@ -104,7 +103,7 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
-@Mod(modid = "AWWayofTime", name = "AlchemicalWizardry", version = "v1.3.3", guiFactory = "WayofTime.alchemicalWizardry.client.gui.ConfigGuiFactory")
+@Mod(modid = "AWWayofTime", name = "AlchemicalWizardry", version = "GRADLETOKEN_VERSION", guiFactory = "WayofTime.alchemicalWizardry.client.gui.ConfigGuiFactory")
 public class AlchemicalWizardry
 {
 	public static boolean parseTextFiles = false;
@@ -1824,7 +1823,6 @@ public class AlchemicalWizardry
 //        event.registerServerCommand(new CommandBind());
 //        event.registerServerCommand(new CommandUnbind());
 //        event.registerServerCommand(new CommandSN());
-        event.registerServerCommand(new CommandDownloadGAPI());
         event.registerServerCommand(new CommandBloodMagic());
     }
 }
