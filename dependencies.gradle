@@ -20,7 +20,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:ZenScript:master-SNAPSHOT") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:CraftTweaker:1.7.10-3.2.6:dev") {
+    compileOnly("com.github.GTNewHorizons:CraftTweaker:3.2.6:dev") {
         transitive = false
     }
 
