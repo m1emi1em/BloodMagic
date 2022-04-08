@@ -16,7 +16,6 @@ public class MeteorParadigm
     public ItemStack focusStack;
     public int radius;
     public int cost;
-    public static int maxChance = 1000;
 
     public static Random rand = new Random();
 
@@ -37,6 +36,21 @@ public class MeteorParadigm
             componentList.add(mpc);
         }
     }
+    
+    public int getTotalMeteorWeight()
+    {
+    	int totalMeteorWeight = 0;
+    	for (MeteorParadigmComponent mpc : componentList)
+        {
+            if (mpc == null || !mpc.isValidBlockParadigm())
+            {
+                continue;
+            }
+
+            totalMeteorWeight += mpc.getChance();
+        }
+    	return totalMeteorWeight;
+    }
 
     public void createMeteorImpact(World world, int x, int y, int z, boolean[] flags)
     {
@@ -56,16 +70,13 @@ public class MeteorParadigm
         }
 
         int newRadius = radius;
-        int chance = maxChance;
 
         if (hasOrbisTerrae)
         {
             newRadius += 2;
-            chance += 200;
         } else if (hasTerrae)
         {
             newRadius += 1;
-            chance += 100;
         }
 
         world.createExplosion(null, x, y, z, newRadius * 4, AlchemicalWizardry.doMeteorsDestroyBlocks);
@@ -75,6 +86,8 @@ public class MeteorParadigm
         float obsidChance = hasTennebrae ? 1 : 0;
 
         float totalChance = iceChance + soulChance + obsidChance;
+        
+        int totalMeteorWeight = getTotalMeteorWeight();
 
         for (int i = -newRadius; i <= newRadius; i++)
         {
@@ -92,7 +105,8 @@ public class MeteorParadigm
                         continue;
                     }
 
-                    int randNum = world.rand.nextInt(chance);
+                    int randNum = world.rand.nextInt(totalMeteorWeight);
+
                     boolean hasPlacedBlock = false;
 
                     for (MeteorParadigmComponent mpc : componentList)
