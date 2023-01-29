@@ -1,14 +1,7 @@
 package WayofTime.alchemicalWizardry.common.items;
 
-import WayofTime.alchemicalWizardry.AlchemicalWizardry;
-import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
-import WayofTime.alchemicalWizardry.common.IDemon;
-import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.IHoardDemon;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
-import com.google.common.collect.Multimap;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -24,7 +17,19 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import WayofTime.alchemicalWizardry.AlchemicalWizardry;
+import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
+import WayofTime.alchemicalWizardry.common.IDemon;
+import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.IHoardDemon;
+import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
+
+import com.google.common.collect.Multimap;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class DaggerOfSacrifice extends EnergyItems {
+
     public DaggerOfSacrifice() {
         super();
         this.maxStackSize = 1;
@@ -41,14 +46,12 @@ public class DaggerOfSacrifice extends EnergyItems {
     }
 
     @Override
-    public boolean hitEntity(
-            ItemStack par1ItemStack, EntityLivingBase par2EntityLivingBase, EntityLivingBase par3EntityLivingBase) {
-        if (par3EntityLivingBase == null
-                || par2EntityLivingBase == null
+    public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLivingBase,
+            EntityLivingBase par3EntityLivingBase) {
+        if (par3EntityLivingBase == null || par2EntityLivingBase == null
                 || par3EntityLivingBase.worldObj.isRemote
-                || (par3EntityLivingBase instanceof EntityPlayer
-                        && SpellHelper.isFakePlayer(
-                                par3EntityLivingBase.worldObj, (EntityPlayer) par3EntityLivingBase))) {
+                || (par3EntityLivingBase instanceof EntityPlayer && SpellHelper
+                        .isFakePlayer(par3EntityLivingBase.worldObj, (EntityPlayer) par3EntityLivingBase))) {
             return false;
         }
 
@@ -56,8 +59,7 @@ public class DaggerOfSacrifice extends EnergyItems {
             return false;
         }
 
-        if (par2EntityLivingBase.isChild()
-                || par2EntityLivingBase instanceof EntityPlayer
+        if (par2EntityLivingBase.isChild() || par2EntityLivingBase instanceof EntityPlayer
                 || par2EntityLivingBase instanceof IBossDisplayData) {
             return false;
         }
@@ -84,7 +86,16 @@ public class DaggerOfSacrifice extends EnergyItems {
 
             for (int i = 0; i < 8; i++) {
                 SpellHelper.sendIndexedParticleToAllAround(
-                        world, posX, posY, posZ, 20, world.provider.dimensionId, 1, posX, posY, posZ);
+                        world,
+                        posX,
+                        posY,
+                        posZ,
+                        20,
+                        world.provider.dimensionId,
+                        1,
+                        posX,
+                        posY,
+                        posZ);
             }
 
             par2EntityLivingBase.setHealth(-1);
@@ -110,13 +121,10 @@ public class DaggerOfSacrifice extends EnergyItems {
             return 15.0F;
         } else {
             Material material = par2Block.getMaterial();
-            return material != Material.plants
-                            && material != Material.vine
-                            && material != Material.coral
-                            && material != Material.leaves
-                            && material != Material.gourd
-                    ? 1.0F
-                    : 1.5F;
+            return material != Material.plants && material != Material.vine
+                    && material != Material.coral
+                    && material != Material.leaves
+                    && material != Material.gourd ? 1.0F : 1.5F;
         }
     }
 

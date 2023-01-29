@@ -4,25 +4,29 @@ import static WayofTime.alchemicalWizardry.common.tweaker.MTHelper.toObjects;
 import static WayofTime.alchemicalWizardry.common.tweaker.MTHelper.toShapedObjects;
 import static WayofTime.alchemicalWizardry.common.tweaker.MTHelper.toStack;
 
-import WayofTime.alchemicalWizardry.api.items.ShapedBloodOrbRecipe;
-import WayofTime.alchemicalWizardry.api.items.ShapelessBloodOrbRecipe;
 import java.util.ArrayList;
 import java.util.List;
+
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+import WayofTime.alchemicalWizardry.api.items.ShapedBloodOrbRecipe;
+import WayofTime.alchemicalWizardry.api.items.ShapelessBloodOrbRecipe;
 
 /**
  * MineTweaker3 Blood Orb Recipe Handler by joshie *
  */
 @ZenClass("mods.bloodmagic.BloodOrb")
 public class BloodOrb {
+
     public static List<IUndoableAction> lateAdditions = new ArrayList<>();
     public static List<IUndoableAction> lateRemovals = new ArrayList<>();
 
@@ -48,6 +52,7 @@ public class BloodOrb {
     }
 
     private static class Add implements IUndoableAction {
+
         private IRecipe iRecipe;
         private final boolean isShapeless;
         private final ItemStack output;
@@ -98,6 +103,7 @@ public class BloodOrb {
     }
 
     private static class Remove implements IUndoableAction {
+
         private final ItemStack output;
         private IRecipe iRecipe;
 

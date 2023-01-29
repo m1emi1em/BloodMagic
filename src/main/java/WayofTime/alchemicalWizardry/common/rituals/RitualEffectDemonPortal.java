@@ -1,5 +1,16 @@
 package WayofTime.alchemicalWizardry.common.rituals;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.world.World;
+
 import WayofTime.alchemicalWizardry.AlchemicalWizardry;
 import WayofTime.alchemicalWizardry.ModBlocks;
 import WayofTime.alchemicalWizardry.api.Int3;
@@ -12,40 +23,18 @@ import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
 import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
 import WayofTime.alchemicalWizardry.common.demonVillage.tileEntity.TEDemonPortal;
 import WayofTime.alchemicalWizardry.common.tileEntity.TEBellJar;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.world.World;
 
 public class RitualEffectDemonPortal extends RitualEffect {
+
     public static final int neededAmount = 16000;
     public static final Random rand = new Random();
     public static final int drainRate = 50;
-    public static final Reagent[] reagents = new Reagent[] {
-        ReagentRegistry.aetherReagent,
-        ReagentRegistry.aquasalusReagent,
-        ReagentRegistry.terraeReagent,
-        ReagentRegistry.incendiumReagent,
-        ReagentRegistry.sanctusReagent,
-        ReagentRegistry.tenebraeReagent,
-        ReagentRegistry.magicalesReagent,
-        ReagentRegistry.potentiaReagent
-    };
-    public static final Int3[] jarLocations = new Int3[] {
-        new Int3(4, 5, 4),
-        new Int3(-4, 5, 4),
-        new Int3(4, 5, -4),
-        new Int3(-4, 5, -4),
-        new Int3(0, 5, 6),
-        new Int3(0, 5, -6),
-        new Int3(6, 5, 0),
-        new Int3(-6, 5, 0)
-    };
+    public static final Reagent[] reagents = new Reagent[] { ReagentRegistry.aetherReagent,
+            ReagentRegistry.aquasalusReagent, ReagentRegistry.terraeReagent, ReagentRegistry.incendiumReagent,
+            ReagentRegistry.sanctusReagent, ReagentRegistry.tenebraeReagent, ReagentRegistry.magicalesReagent,
+            ReagentRegistry.potentiaReagent };
+    public static final Int3[] jarLocations = new Int3[] { new Int3(4, 5, 4), new Int3(-4, 5, 4), new Int3(4, 5, -4),
+            new Int3(-4, 5, -4), new Int3(0, 5, 6), new Int3(0, 5, -6), new Int3(6, 5, 0), new Int3(-6, 5, 0) };
 
     @Override
     public void performEffect(IMasterRitualStone ritualStone) {
@@ -68,7 +57,7 @@ public class RitualEffectDemonPortal extends RitualEffect {
                 int reagentAmount = tag.getInteger(ReagentRegistry.getKeyForReagent(reagent));
                 if (reagentAmount < neededAmount) {
                     reagentsFulfilled = false;
-                    //        			System.out.println("Reagents not fulfilled. Missing: " +
+                    // System.out.println("Reagents not fulfilled. Missing: " +
                     // ReagentRegistry.getKeyForReagent(reagent));
                     int drainAmount = Math.min(drainRate, neededAmount - reagentAmount);
 
@@ -104,16 +93,12 @@ public class RitualEffectDemonPortal extends RitualEffect {
     }
 
     public boolean checkCreatePortal(IMasterRitualStone ritualStone) {
-        TileEntity entity = ritualStone
-                .getWorld()
+        TileEntity entity = ritualStone.getWorld()
                 .getTileEntity(ritualStone.getXCoord(), ritualStone.getYCoord() + 1, ritualStone.getZCoord());
         if (entity instanceof IBloodAltar) {
             IBloodAltar altar = (IBloodAltar) entity;
-            if (altar.hasDemonBlood()
-                    && ritualStone
-                            .getWorld()
-                            .isAirBlock(
-                                    ritualStone.getXCoord(), ritualStone.getYCoord() + 2, ritualStone.getZCoord())) {
+            if (altar.hasDemonBlood() && ritualStone.getWorld()
+                    .isAirBlock(ritualStone.getXCoord(), ritualStone.getYCoord() + 2, ritualStone.getZCoord())) {
                 return true;
             }
         }
@@ -126,8 +111,12 @@ public class RitualEffectDemonPortal extends RitualEffect {
     }
 
     public void createRandomLightning(World world, int x, int y, int z) {
-        world.addWeatherEffect(new EntityLightningBolt(
-                world, x + rand.nextInt(10) - rand.nextInt(10), y + 1, z + rand.nextInt(10) - rand.nextInt(10)));
+        world.addWeatherEffect(
+                new EntityLightningBolt(
+                        world,
+                        x + rand.nextInt(10) - rand.nextInt(10),
+                        y + 1,
+                        z + rand.nextInt(10) - rand.nextInt(10)));
     }
 
     @Override
@@ -149,8 +138,8 @@ public class RitualEffectDemonPortal extends RitualEffect {
         int z = ritualStone.getZCoord();
 
         for (Int3 pos : jarLocations) {
-            if (!(ritualStone.getWorld().getTileEntity(x + pos.xCoord, y + pos.yCoord, z + pos.zCoord)
-                    instanceof TEBellJar)) {
+            if (!(ritualStone.getWorld()
+                    .getTileEntity(x + pos.xCoord, y + pos.yCoord, z + pos.zCoord) instanceof TEBellJar)) {
                 return false;
             }
         }

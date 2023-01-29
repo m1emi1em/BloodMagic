@@ -1,5 +1,14 @@
 package WayofTime.alchemicalWizardry.common.rituals;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
+
 import WayofTime.alchemicalWizardry.AlchemicalWizardry;
 import WayofTime.alchemicalWizardry.api.alchemy.energy.ReagentRegistry;
 import WayofTime.alchemicalWizardry.api.rituals.IMasterRitualStone;
@@ -7,15 +16,9 @@ import WayofTime.alchemicalWizardry.api.rituals.RitualComponent;
 import WayofTime.alchemicalWizardry.api.rituals.RitualEffect;
 import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
 import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
 
 public class RitualEffectWellOfSuffering extends RitualEffect {
+
     public static final int timeDelay = 25;
     public static final int amount = AlchemicalWizardry.lpPerSacrificeWellOfSuffering;
 
@@ -60,21 +63,24 @@ public class RitualEffectWellOfSuffering extends RitualEffect {
         int d0 = 10;
         int vertRange = hasPotentia ? 20 : 10;
         AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(
-                        (double) x, (double) y, (double) z, (double) (x + 1), (double) (y + 1), (double) (z + 1))
-                .expand(d0, vertRange, d0);
+                (double) x,
+                (double) y,
+                (double) z,
+                (double) (x + 1),
+                (double) (y + 1),
+                (double) (z + 1)).expand(d0, vertRange, d0);
         List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
 
         int entityCount = 0;
-        boolean hasTennebrae =
-                this.canDrainReagent(ritualStone, ReagentRegistry.tenebraeReagent, tennebraeDrain, false);
+        boolean hasTennebrae = this
+                .canDrainReagent(ritualStone, ReagentRegistry.tenebraeReagent, tennebraeDrain, false);
         boolean hasOffensa = this.canDrainReagent(ritualStone, ReagentRegistry.offensaReagent, offensaDrain, false);
 
         if (currentEssence < this.getCostPerRefresh() * list.size()) {
             SoulNetworkHandler.causeNauseaToPlayer(owner);
         } else {
             for (EntityLivingBase livingEntity : list) {
-                if (!livingEntity.isEntityAlive()
-                        || livingEntity instanceof EntityPlayer
+                if (!livingEntity.isEntityAlive() || livingEntity instanceof EntityPlayer
                         || AlchemicalWizardry.wellBlacklist.contains(livingEntity.getClass())) {
                     continue;
                 }

@@ -1,13 +1,7 @@
 package WayofTime.alchemicalWizardry.common.items;
 
-import WayofTime.alchemicalWizardry.AlchemicalWizardry;
-import WayofTime.alchemicalWizardry.api.event.SacrificeKnifeUsedEvent;
-import WayofTime.alchemicalWizardry.api.sacrifice.PlayerSacrificeHandler;
-import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +16,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 
+import WayofTime.alchemicalWizardry.AlchemicalWizardry;
+import WayofTime.alchemicalWizardry.api.event.SacrificeKnifeUsedEvent;
+import WayofTime.alchemicalWizardry.api.sacrifice.PlayerSacrificeHandler;
+import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
+import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class SacrificialDagger extends Item {
+
     public SacrificialDagger() {
         super();
         this.maxStackSize = 1;
@@ -55,10 +58,10 @@ public class SacrificialDagger extends Item {
      */
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int itemInUseCount) {
-        //        if(itemInUseCount < 32)
-        //        {
-        //        	return;
-        //        }
+        // if(itemInUseCount < 32)
+        // {
+        // return;
+        // }
 
         PlayerSacrificeHandler.sacrificePlayerHealth(player);
     }

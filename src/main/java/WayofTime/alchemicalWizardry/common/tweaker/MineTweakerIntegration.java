@@ -8,6 +8,7 @@ import minetweaker.util.IEventHandler;
  * MineTweaker3 Integration by joshie *
  */
 public class MineTweakerIntegration {
+
     public static void register() {
         MineTweakerAPI.registerClass(Alchemy.class);
         MineTweakerAPI.registerClass(Binding.class);
@@ -22,6 +23,7 @@ public class MineTweakerIntegration {
 
     public static class HandleLateAdditionsAndRemovals
             implements IEventHandler<MineTweakerImplementationAPI.ReloadEvent> {
+
         @Override
         public void handle(MineTweakerImplementationAPI.ReloadEvent event) {
             BloodOrb.applyAdditionsAndRemovals();
