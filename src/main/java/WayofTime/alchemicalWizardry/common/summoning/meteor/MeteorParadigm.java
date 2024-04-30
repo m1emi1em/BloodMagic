@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -153,18 +154,13 @@ public class MeteorParadigm {
                         if (randNum < 0) {
                             ItemStack blockStack = mpc.getValidBlockParadigm();
                             if (blockStack != null && blockStack.getItem() instanceof ItemBlock) {
-                                ((ItemBlock) blockStack.getItem()).placeBlockAt(
-                                        blockStack,
-                                        null,
-                                        world,
+                                world.setBlock(
                                         x + i,
                                         y + j,
                                         z + k,
-                                        0,
-                                        0,
-                                        0,
-                                        0,
-                                        blockStack.getItemDamage());
+                                        Block.getBlockFromItem(blockStack.getItem()),
+                                        blockStack.getItemDamage(),
+                                        3);
                                 if (AlchemicalWizardry.isGregTechLoaded)
                                     setGTOresNaturalIfNeeded(world, x + i, y + j, z + k);
                                 world.markBlockForUpdate(x + i, y + j, z + k);
